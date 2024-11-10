@@ -11,19 +11,56 @@ Nick::~Nick()
 
 void Nick::execute(Client *client, std::list<string> args)
 {
-	// Server *server = client->getServer();
-	string nickname = args.front();
-	// const std::map<int, Client *> &clients = server->getClients();
+	if (client->getPassword().empty())
+	{
+		ERR_PASSREQUIRED(client);
+		return ;
+	}
 
 	if (args.size() == 0)
 	{
 		ERR_NONICKNAMEGIVEN(client);
-		return;
+		return ;
 	}
 
-	while (!args.empty())
+	if (args.size() > 1)
 	{
-		cout << args.front() << endl;
-		args.pop_front();
+		string invalid_nick;
+		while (!args.empty())
+		{
+			invalid_nick = invalid_nick + " " + args.front();
+			args.pop_front();
+		}
+		ERR_ERRONEUSNICKNAME(client, invalid_nick);
+		return ;
 	}
+	
+	string nickname = args.front();
+	string::iterator str_it;
+
+	for (str_it; str_it != nickname.end(); ++str_it)
+	{
+		if (*str_it == ' ' || std::isdigit(nickname[0])
+			|| *str_it == '#' || *str_it == ':' || *str_it == '&')
+		{
+			ERR_ERRONEUSNICKNAME(client, nickname);
+			return;
+		}
+	}
+
+	Server *server = client->getServer();
+	std::map<int, Client *> &clients = server->getClients();
+	std::map<int, Client *>::iterator it;
+	
+	for (it; it != clients.end(); ++it)
+	{
+		if (it->second->getNickname() == nickname)
+		{
+			ERR_NICKNAMEINUSE(client, nickname);
+			return ;
+		}
+	}
+
+	client->setNickname(nickname);
+	return ;
 }

@@ -63,7 +63,7 @@ using std::string;
 #define ERR_INVITEONLYCHAN(client, ch_name) client->response(client->getHostname() + ch_name + ":Cannot join channel (+i)\r\n");
 #define ERR_TOOMANYCHANNELS(client, ch_name) client->response(client->getHostname() + ch_name + ":You have joined too many channels\r\n");
 
-#define ERROR() client->response("ERROR :Connection timeout ;Server closing a client connection because it is unresponsive.\r\n");
-#define ERR_AUTH() client->response("ERROR :Access denied: Authentication required\r\n");
-#define ERR_NICK() client->response("ERROR :Access denied: Nickname Required\r\n");
-#define ERR_USER() client->response("ERROR :Access denied: Username Requeired\r\n");
+#define ERROR(client) client->response("ERROR :Connection timeout ;Server closing a client connection because it is unresponsive.\r\n");
+#define ERR_AUTH(client) client->response("ERROR :Access denied: Authentication required\r\n");
+
+#define ERR_PASSREQUIRED(client) client->response("ERROR :You need to setup password before use this command\r\n");

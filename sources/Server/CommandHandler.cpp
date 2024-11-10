@@ -64,46 +64,7 @@ void CommandHandler::handleCommand(string command, Client *client)
 
 			// TODO: after that this instructions
 			// TODO: will be blocked to be called by the execute command.
-
-			if (client->isAuthenticated() == true && (command_name == "PASS"
-				|| command_name == "NICK" || command_name == "USER"))
-				{
-					ERR_ALREADYREGISTERED(client);
-					break;
-				}
-
-			if (client->isAuthenticated() == true)
-			{
-				operation->execute(client, args);
-				break ;
-			}
-			
-			if (client->getPassword().empty() && command_name == "PASS")
-			{
-				// todo: check all the informations and errors inside the password command
-				operation->execute(client, args);
-				break ;
-			}
-
-			if (!client->getPassword().empty()
-				&& client->getNickname().empty()
-				&& command_name == "NICK")
-			{
-				// todo: check all the informations and errors inside the NICK command
-				operation->execute(client, args);
-				break ;
-			}
-
-			if (!client->getPassword().empty()
-				&& client->getNickname().empty()
-				&& client->getUsername().empty()
-				&& command_name == "USER")
-			{
-				operation->execute(client, args);
-				break ;
-			}
-
-
+			operation->execute(client, args);
 		}
 		catch (const std::exception &e)
 		{

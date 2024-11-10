@@ -168,11 +168,6 @@ void Server::handleMessageFromClient(int fd)
 
 		cout << CYAN << "Message: " << message << RESET << endl;
 
-		if (!client->getPassword().empty() 
-			&& !client->getNickname().empty()
-			&& !client->getUsername().empty())
-			client->setAuthenticated(true);
-
 		_commandHandler->handleCommand(message, client);
 	}
 	catch (const std::exception &e)
@@ -235,7 +230,7 @@ void Server::addChannel(const string &channel_name, Channel *channel)
  * @return const std::map<int, Client*>&
  */
 
-const std::map<int, Client *> &Server::getClients() const
+std::map<int, Client *> &Server::getClients()
 {
 	return _clients;
 }

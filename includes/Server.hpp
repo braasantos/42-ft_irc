@@ -29,7 +29,7 @@ public:
 	string getPassword() const;
 	Channel *getChannel(const string &channel_name);
 	std::map<string, Channel *> &getChannels();
-	const std::map<int, Client *> &getClients() const;
+	std::map<int, Client *> &getClients();
 
 	void setPassword(const string password);
 
