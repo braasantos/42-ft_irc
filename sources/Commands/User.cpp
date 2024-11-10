@@ -28,9 +28,23 @@ void User::execute(Client* client, std::list<string> args)
 	//!the <username> parameter from this command should be ignored in favour of the one received from the identity server.
 
 
+	//* USER guest 0 * :Ronnie Reagan
+
 	//!Numeric Replies:
 	//!ERR_NEEDMOREPARAMS (461)
 	//!ERR_ALREADYREGISTERED (462)
+
+	if (client->isAuthenticated())
+	{
+		ERR_ALREADYREGISTERED(client);
+		return ;
+	}
+
+	if (client->getPassword().empty() || client->getNickname().empty())
+	{
+		ERR_NICKREQUIRED(client);
+		return ;
+	}
 
 
 }

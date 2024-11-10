@@ -53,17 +53,18 @@ using std::string;
 
 
 #define ERR_ALREADYREGISTERED(client) client->response(client->getHostname() + " :You may not reregister\r\n")
-#define ERR_PASSWDMISMATCH(client) client->response(client->getHostname() + " " + ":Password incorrect\r\n");
+#define ERR_PASSWDMISMATCH(client) client->response(client->getHostname() + " " + ":Password incorrect\r\n")
 #define ERR_NEEDMOREPARAMS(client, command) client->response(client->getHostname() + " " + command + " :Not enough parameters\r\n")
-#define ERR_NONICKNAMEGIVEN(client) client->response(client->getHostname() + ":No nickname given");
+#define ERR_NONICKNAMEGIVEN(client) client->response(client->getHostname() + ":No nickname given")
 #define ERR_ERRONEUSNICKNAME(client, nickname) client->response(client->getHostname() + nickname + ":Erroneus nickname\r\n")
 #define ERR_NICKNAMEINUSE(client, nickname) client->response(client->getHostname() + nickname + ":Nickname is already in use\r\n")
 #define ERR_NOSUCHCHANNEL(client, ch_name) client->response(client->getHostname() + client->getNickname() + " " + ch_name + " :No such channel\r\n")
-#define ERR_BADCHANNELKEY(client, ch_name) client->response(client->getHostname() + ch_name + ":Cannot join channel (+k)\r\n");
-#define ERR_INVITEONLYCHAN(client, ch_name) client->response(client->getHostname() + ch_name + ":Cannot join channel (+i)\r\n");
-#define ERR_TOOMANYCHANNELS(client, ch_name) client->response(client->getHostname() + ch_name + ":You have joined too many channels\r\n");
+#define ERR_BADCHANNELKEY(client, ch_name) client->response(client->getHostname() + ch_name + ":Cannot join channel (+k)\r\n")
+#define ERR_INVITEONLYCHAN(client, ch_name) client->response(client->getHostname() + ch_name + ":Cannot join channel (+i)\r\n")
+#define ERR_TOOMANYCHANNELS(client, ch_name) client->response(client->getHostname() + ch_name + ":You have joined too many channels\r\n")
 
-#define ERROR(client) client->response("ERROR :Connection timeout ;Server closing a client connection because it is unresponsive.\r\n");
-#define ERR_AUTH(client) client->response("ERROR :Access denied: Authentication required\r\n");
+#define ERROR(client) client->response("ERROR :Connection timeout ;Server closing a client connection because it is unresponsive.\r\n")
+#define ERR_AUTH(client) client->response("ERROR :Access denied: Authentication required\r\n")
 
-#define ERR_PASSREQUIRED(client) client->response("ERROR :You need to setup password before use this command\r\n");
+#define ERR_PASSREQUIRED(client) client->response("ERROR :You need to setup password before use this command\r\n")
+#define ERR_NICKREQUIRED(client) client->response("ERRROR :You need to setup password and nickname before use this command\r\n")

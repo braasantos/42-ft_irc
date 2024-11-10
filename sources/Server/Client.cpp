@@ -15,7 +15,7 @@ Client::Client(string hostname, uint16_t port, int fd, Server *server)
 	_hostname = hostname;
 	_nickname = "";
 	_username = "";
-	_realname = "";
+	_realname = "~guest";
 	_password = "";
 	_authenticated = false;
 	_hasPassword = false;
