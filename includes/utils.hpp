@@ -61,7 +61,9 @@ using std::string;
 #define ERR_BADCHANNELKEY(client, ch_name) client->response(client->getHostname() + ch_name + ":Cannot join channel (+k)\r\n")
 #define ERR_INVITEONLYCHAN(client, ch_name) client->response(client->getHostname() + ch_name + ":Cannot join channel (+i)\r\n")
 #define ERR_TOOMANYCHANNELS(client, ch_name) client->response(client->getHostname() + ch_name + ":You have joined too many channels\r\n")
-
+#define ERR_MODEINVITEONLY(client, ch_name) client->response(client->getHostname() + ch_name + ":Channel has invite mode only\r\n")
+#define ERR_BANNEDFROMCHAT(client, ch_name) client->response(client->getHostname() + ch_name + ":You have been banned from this channel\r\n")
+#define ERR_CHANNELUSERLIMIT(client, ch_name) client->response(client->getHostname() + ch_name + ":Channel reached max number of clients\r\n")
 #define ERROR(client) client->response("ERROR :Connection timeout ;Server closing a client connection because it is unresponsive.\r\n")
 #define ERR_AUTH(client) client->response("ERROR :Access denied: Authentication required\r\n")
 

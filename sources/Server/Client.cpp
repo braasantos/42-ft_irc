@@ -13,15 +13,14 @@ Client::Client(string hostname, uint16_t port, int fd, Server *server)
 	_fd = fd;
 	_port = port;
 	_hostname = hostname;
+	_channelimit = 5;
 	_userlen = 8;
 	_nickname = "";
 	_username = "";
 	_realname = "~guest";
 	_password = "";
+	_banned = false;
 	_authenticated = false;
-	_hasPassword = false;
-	_hasNickname = false;
-	_hasUsername = false;
 	_server = server;
 }
 
@@ -223,33 +222,27 @@ void Client::setAuthenticated(bool authenticated)
 	_authenticated = authenticated;
 }
 
-bool Client::hasPassword() const
-{
-	return (_hasPassword);
-}
-bool Client::hasNickname() const
-{
-	return (_hasNickname);
-}
-bool Client::hasUsername() const
-{
-	return (_hasUsername);
-}
-
-void Client::authenticatePassword(bool authenticated)
-{
-	_hasPassword = authenticated;
-}
-void Client::authenticateNickname(bool authenticated)
-{
-	_hasNickname = authenticated;
-}
-void Client::authenticateUsername(bool authenticated)
-{
-	_hasUsername = authenticated;
-}
-
  int Client::getUserLen() const
  {
 	return (_userlen);
  }
+
+ std::vector<Channel*> &Client::getInvitedChannels()
+ {
+	return (invited_channels);
+ }
+
+unsigned int Client::getChannelLimit() const
+{
+	return (_channelimit);
+}
+
+bool Client::getBanned() const
+{
+	return (_banned);
+}
+
+void Client::setBanned(bool banned)
+{
+	_banned = true;
+}

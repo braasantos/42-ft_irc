@@ -8,47 +8,81 @@ Join::~Join() {}
 
 void Join::execute(Client *client, std::list<string> args)
 {
+
 	if (args.empty())
 	{
-		client->response(":" + client->getHostname() + " 461 JOIN :Not enough parameters\r\n");
-		return;
+		ERR_NEEDMOREPARAMS(client, "JOIN");
+		return ;
 	}
 
-	Server *server = client->getServer();
 	string ch_name = args.front();
-	Channel *ch_helper = server->getChannel(ch_name);
 
 	if (ch_name[0] != '#')
 	{
-		client->response(":" + client->getHostname() + " 403 " + client->getNickname() + " " + ch_name + " :No such channel\r\n");
-		return;
+		ERR_NOSUCHCHANNEL(client, ch_name);
+		return ;
 	}
 
-	if (ch_helper == NULL)
+	Server *server = client->getServer();
+	Channel *channel = server->getChannel(ch_name);
+
+	if (channel->isInviteOnly())
 	{
-		Channel *channel = new Channel();
+		ERR_MODEINVITEONLY(client, ch_name);
+		return ;
+	}
+
+	std::map<string, Client *> banlist = channel->getBanlist();
+	std::map<string, Client*>::iterator it = banlist.begin();
+
+	for (; it != banlist.end(); ++it)
+	{
+		if (it->first == client->getNickname())
+		{
+			ERR_BANNEDFROMCHAT(client, ch_name);
+			return ;
+		}
+	}
+
+	std::vector<Client *> members = channel->getMembers();
+
+	if (static_cast<int>(members.size()) == channel->getUserlimit())
+	{
+		ERR_CHANNELUSERLIMIT(client, ch_name);
+		return ;
+	}
+
+	std::vector<Channel *> client_channels = client->getInvitedChannels();
+
+	if (client_channels.size() == client->getChannelLimit())
+	{
+		ERR_TOOMANYCHANNELS(client, ch_name);
+		return ;
+	}
+
+	if (channel == NULL)
+	{
+		Channel *newChannel = new Channel();
 		server->addChannel(ch_name, channel);
 		client->response(":" + client->getNickname() + " JOIN " + ch_name + "\r\n");
-		ch_helper = channel;
-		server->addChannel(ch_name, ch_helper);
 	}
 	else
-		client->response(":" + client->getNickname() + " JOIN " + ch_name + "\r\n");
-
-	if (!ch_helper->getTopic().empty())
-		client->response("332 " + client->getNickname() + " " + ch_name + " :" + ch_helper->getTopic() + "\r\n");
+		client->response(":" + client->getNickname() + " JOIN" + ch_name + "\r\n");
+	
+	if (channel->getTopic().empty())
+		client->response(client->getNickname() + " " + ch_name + " :No topic is set\r\n");
 	else
-		client->response("331 " + client->getNickname() + " " + ch_name + " :No topic is set\r\n");
+		client->response(client->getNickname() + " " + ch_name + " :" + channel->getTopic() + "\r\n");
 
-	std::vector<Client *> members = ch_helper->getMembers();
 	string names;
-	for (std::vector<Client *>::iterator it = members.begin(); it != members.end(); ++it)
-		names += (*it)->getNickname() + " ";
+	std::vector<Client *>::iterator names_it = members.begin();
 
+	for (; names_it != members.end(); ++it)
+		names += (*names_it)->getNickname() + " ";
+	
 	names += client->getNickname();
-	client->response("353 " + client->getNickname() + " -> " + ch_name + " :" + names + "\r\n");
-	client->response("366 " + client->getNickname() + " " + ch_name + " :End of /NAMES list\r\n");
+	client->response(client->getNickname() + " -> " + ch_name + " :" + names + "\r\n");
+	client->response(client->getNickname() + " " + ch_name + ":End of NAMES list\r\n");
 
-	ch_helper->addMember(client);
-
+	channel->addMember(client);
 }

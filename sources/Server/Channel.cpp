@@ -205,3 +205,13 @@ void Channel::removeMember(Client *client)
 {
 	_members.erase(client->getNickname());
 }
+
+std::map<string, Client*> &Channel::getBanlist()
+{
+	return(_banList);
+}
+
+int Channel::getUserlimit() const
+{
+	return (_userLimit);
+}

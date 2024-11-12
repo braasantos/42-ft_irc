@@ -13,12 +13,14 @@ class Client
 		int _port;
 
 		int _userlen;
+		unsigned int _channelimit;
 		string _nickname;
 		string _username;
 		string _realname;
 		string _hostname;
 		string _password;
 
+		bool _banned;
 		bool _authenticated;
 
 
@@ -42,6 +44,7 @@ class Client
 		bool hasPassword() const;
 		bool hasNickname() const;
 		bool hasUsername() const;
+		bool getBanned() const;
 
 
 		string getNickname() const;
@@ -49,7 +52,9 @@ class Client
 		string getRealname() const;
 		string getHostname() const;
 		string getPassword() const;
+		unsigned int getChannelLimit() const;
 		Channel* getChannel(string name);
+		std::vector<Channel*> &getInvitedChannels();
 		Server* getServer();
 
 		void setNickname(string nickname);
@@ -57,6 +62,7 @@ class Client
 		void setRealname(string realname);
 		void setHostname(string hostname);
 		void setPassword(string password);
+		void setBanned(bool banned);
 
 
 		void authenticatePassword(bool authenticated);

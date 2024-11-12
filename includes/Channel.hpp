@@ -20,14 +20,17 @@ private:
 	std::vector<string> _invited_members;
 
 	std::map<string, Client *> _members;
+	std::map<string, Client *> _banList;
 
 public:
 	Channel();
 	~Channel();
 	string getName() const;
 	std::vector<Client *> getMembers() const;
+	std::map<string, Client*> &getBanlist();
 
 	char getMode() const;
+	int getUserlimit() const;
 	string getTopic() const;
 	bool isOperator(Client *client) const;
 	bool isOnChannel(string nickname) const;
