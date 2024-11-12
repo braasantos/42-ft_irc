@@ -11,6 +11,8 @@ class Client
 	private:
 		int _fd;
 		int _port;
+
+		int _userlen;
 		string _nickname;
 		string _username;
 		string _realname;
@@ -34,6 +36,7 @@ class Client
 
 		int getFd() const;
 		int getMode() const;
+		int getUserLen() const;
 
 		bool isAuthenticated() const;
 		bool hasPassword() const;

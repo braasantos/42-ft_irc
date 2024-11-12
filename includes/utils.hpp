@@ -67,4 +67,5 @@ using std::string;
 #define ERR_AUTH(client) client->response("ERROR :Access denied: Authentication required\r\n")
 
 #define ERR_PASSREQUIRED(client) client->response("ERROR :You need to setup password before use this command\r\n")
-#define ERR_NICKREQUIRED(client) client->response("ERRROR :You need to setup password and nickname before use this command\r\n")
+#define ERR_NICKREQUIRED(client) client->response("ERROR :You need to setup password and nickname before use this command\r\n")
+#define ERR_INVALIDPARAMETERS(client) client->response("ERROR :Invalid Parameters\r\n");

@@ -13,6 +13,7 @@ Client::Client(string hostname, uint16_t port, int fd, Server *server)
 	_fd = fd;
 	_port = port;
 	_hostname = hostname;
+	_userlen = 8;
 	_nickname = "";
 	_username = "";
 	_realname = "~guest";
@@ -247,3 +248,8 @@ void Client::authenticateUsername(bool authenticated)
 {
 	_hasUsername = authenticated;
 }
+
+ int Client::getUserLen() const
+ {
+	return (_userlen);
+ }
