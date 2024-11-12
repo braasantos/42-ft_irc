@@ -46,5 +46,9 @@ void User::execute(Client* client, std::list<string> args)
 		return ;
 	}
 
-
+	while (!args.empty())
+	{
+		cout << args.front() << endl;
+		args.pop_front();
+	}
 }
