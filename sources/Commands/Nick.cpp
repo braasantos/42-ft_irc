@@ -11,8 +11,6 @@ Nick::~Nick()
 
 void Nick::execute(Client *client, std::list<string> args)
 {
-
-	cout << RED << args.size() << RESET << endl;
 	if (client->getPassword().empty())
 	{
 		ERR_PASSREQUIRED(client);
@@ -63,5 +61,6 @@ void Nick::execute(Client *client, std::list<string> args)
 	}
 
 	client->setNickname(nickname);
+	client->response("Nick accepted\r\n");
 	return ;
 }

@@ -26,7 +26,6 @@ void Privmsg::execute(Client *client, std::list<string> args)
 		message += args.front() + " ";
 		args.pop_front();
 	}
-	
 	if (message.empty())
 	{
 		client->response(":" + client->getHostname() + " 412 :No text to send\r\n");

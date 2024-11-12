@@ -43,8 +43,10 @@ void User::execute(Client* client, std::list<string> args)
 
 	while (!args.empty())
 	{
-		realname = realname + " " + args.front();
+		realname = realname + args.front();
 		args.pop_front();
+		if (!args.empty())
+			realname = realname + " ";
 	}
 
 	if ((second_parameter.size() != 1 && second_parameter[0] != '0')
@@ -62,6 +64,12 @@ void User::execute(Client* client, std::list<string> args)
 	}
 	else
 		client->setUsername(username);
+
+	if (realname[0] != ':')
+	{
+		ERR_INVALIDPARAMETERS(client);
+		return ;
+	}
 
 	client->setRealname(realname);
 	client->setAuthenticated(true);

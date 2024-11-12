@@ -51,7 +51,6 @@ using std::string;
 #define CYAN "\033[36m"
 #define RESET "\033[0m"
 
-
 #define ERR_ALREADYREGISTERED(client) client->response(client->getHostname() + " :You may not reregister\r\n")
 #define ERR_PASSWDMISMATCH(client) client->response(client->getHostname() + " " + ":Password incorrect\r\n")
 #define ERR_NEEDMOREPARAMS(client, command) client->response(client->getHostname() + " " + command + " :Not enough parameters\r\n")

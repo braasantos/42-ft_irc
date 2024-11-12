@@ -55,15 +55,6 @@ void CommandHandler::handleCommand(string command, Client *client)
 				argument.erase(std::remove_if(argument.begin(), argument.end(), ::isspace), argument.end());
 				args.push_back(argument);
 			}
-			// TODO: Authentication check.
-			// TODO: Client need to follow the steps
-
-			// TODO: 1st set a PASS
-			// TODO: 2st set a NICKNAME
-			// TODO: 3st set a USERNAME
-
-			// TODO: after that this instructions
-			// TODO: will be blocked to be called by the execute command.
 			operation->execute(client, args);
 		}
 		catch (const std::exception &e)
