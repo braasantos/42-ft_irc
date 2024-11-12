@@ -54,7 +54,7 @@ void User::execute(Client* client, std::list<string> args)
 		return ;
 	}
 
-	if (username.size() > client->getUserLen())
+	if (static_cast<int>(username.size()) > client->getUserLen())
 	{
 		string username_truncated;
 		username_truncated = username.substr(0, client->getUserLen());
