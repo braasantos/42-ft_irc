@@ -59,6 +59,7 @@ void Kick::execute(Client* client, std::list<string> args)
 	Channel *channel = server->getChannel(currChannel);
 	if (!channel->isOperator(client))
 	{
+		cout << client->getNickname() << endl;
 		ERR_CANNOTREMOVEUSER(client, targetToKick)
 		return ;
 	}
@@ -68,7 +69,7 @@ void Kick::execute(Client* client, std::list<string> args)
         Client* client = *it;
 		if (client->getNickname() == targetToKick)
 		{
-			members.erase(it);
+			channel->removeMember(*it);
 			cout << targetToKick + " was removed " + "for " + reason + " by " + client->getNickname() <<endl;
 			return ;
 		}
