@@ -23,11 +23,6 @@ class Client
 		bool _banned;
 		bool _authenticated;
 
-
-		bool _hasPassword;
-		bool _hasNickname;
-		bool _hasUsername;
-
 		std::vector<Channel*> invited_channels;
 
 		Server* _server;
@@ -37,13 +32,9 @@ class Client
 		~Client();
 
 		int getFd() const;
-		int getMode() const;
 		int getUserLen() const;
 
 		bool isAuthenticated() const;
-		bool hasPassword() const;
-		bool hasNickname() const;
-		bool hasUsername() const;
 		bool getBanned() const;
 
 
@@ -63,11 +54,8 @@ class Client
 		void setHostname(string hostname);
 		void setPassword(string password);
 		void setBanned(bool banned);
+		void addInvitedChannel(Channel* channel);
 
-
-		void authenticatePassword(bool authenticated);
-		void authenticateNickname(bool authenticated);
-		void authenticateUsername(bool authenticated);
 		void setAuthenticated(bool authenticated);
 		
 		void response(string message);

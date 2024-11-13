@@ -23,6 +23,14 @@ void Join::execute(Client *client, std::list<string> args)
 		return ;
 	}
 
+	std::vector<Channel *> client_channels = client->getInvitedChannels();
+
+	if (client_channels.size() == client->getChannelLimit())
+	{
+		ERR_TOOMANYCHANNELS(client, ch_name);
+		return ;
+	}
+
 	Server *server = client->getServer();
 	Channel *channel = server->getChannel(ch_name);
 
@@ -34,6 +42,9 @@ void Join::execute(Client *client, std::list<string> args)
 		string names;
 
 		newChannel->addMember(client);
+		newChannel->addOperator(client);
+		std::vector<Channel *>invited_channels = client->getInvitedChannels();
+		client->addInvitedChannel(newChannel);
 		server->addChannel(ch_name, newChannel);
 
 		client->response(":" + client->getNickname() + " JOIN " + ch_name + "\r\n");
@@ -83,12 +94,14 @@ void Join::execute(Client *client, std::list<string> args)
 		}
 	}
 
-	std::vector<Channel *> client_channels = client->getInvitedChannels();
-
-	if (client_channels.size() == client->getChannelLimit())
+	std::vector<Channel *>::iterator ch_it = client_channels.begin();
+	for (; ch_it != client_channels.end(); ++ch_it)
 	{
-		ERR_TOOMANYCHANNELS(client, ch_name);
-		return ;
+		if (*ch_it == channel)
+		{
+			ERR_ALREADYJOINED(client, ch_name);
+			return;
+		}
 	}
 
 	client->response(":" + client->getNickname() + " JOIN" + ch_name + "\r\n");
@@ -108,6 +121,7 @@ void Join::execute(Client *client, std::list<string> args)
 	client->response(client->getNickname() + " -> " + ch_name + " :" + names + "\r\n");
 	client->response(client->getNickname() + " " + ch_name + ":End of NAMES list\r\n");
 
+	client->addInvitedChannel(channel);
 	channel->addMember(client);
 	return ;
 }

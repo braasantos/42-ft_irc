@@ -246,3 +246,8 @@ void Client::setBanned(bool banned)
 {
 	_banned = banned;
 }
+
+void Client::addInvitedChannel(Channel* channel)
+{
+	invited_channels.push_back(channel);
+}

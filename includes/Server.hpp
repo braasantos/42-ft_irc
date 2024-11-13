@@ -28,6 +28,7 @@ public:
 
 	string getPassword() const;
 	Channel *getChannel(const string &channel_name);
+	Client *getClient(const int &fd);
 	std::map<string, Channel *> &getChannels();
 	std::map<int, Client *> &getClients();
 

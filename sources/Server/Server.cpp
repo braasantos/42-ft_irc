@@ -20,7 +20,7 @@ Server::Server()
 
 Server::~Server()
 {
-	delete _commandHandler;
+	delete [] _commandHandler;
 
 	for (std::map<int, Client *>::iterator it = _clients.begin(); it != _clients.end(); ++it)
 	{
@@ -211,6 +211,14 @@ Channel *Server::getChannel(const string &channel_name)
 		return (_channels[channel_name]);
 	return (NULL);
 }
+
+Client *Server::getClient(const int &fd)
+{
+	if (_clients.find(fd) != _clients.end())
+		return (_clients[fd]);
+	return (NULL);
+}
+
 
 /**
  * @brief Add a channel to the server

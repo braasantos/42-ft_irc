@@ -12,23 +12,26 @@ Privmsg::~Privmsg()
 
 void Privmsg::execute(Client *client, std::list<string> args)
 {
-	if (args.size() < 2)
+	if (args.empty())
 	{
-		client->response(":" + client->getHostname() + " 411 :No recipient given (PRIVMSG)\r\n");
-		return;
+		ERR_NORECIPIENT(client, "PRIVMSG");
+		return ;
 	}
 
 	string target = args.front();
-	args.pop_front();
 	string message;
+
+	args.pop_front();
+
 	while (!args.empty())
 	{
 		message += args.front() + " ";
 		args.pop_front();
 	}
+
 	if (message.empty())
 	{
-		client->response(":" + client->getHostname() + " 412 :No text to send\r\n");
+		ERR_NOTEXTTOSEND(client);
 		return;
 	}
 
@@ -39,20 +42,23 @@ void Privmsg::execute(Client *client, std::list<string> args)
 		Channel *channel = server->getChannel(target);
 		if (channel == NULL)
 		{
-			client->response(":" + client->getHostname() + " 403 " + target + " :No such channel\r\n");
+			ERR_NOSUCHNICK(client, target);
 			return;
 		}
 
-		// Check if the client is banned from the channel
 		if (!channel->isOnChannel(client->getNickname()))
 		{
-			client->response(":" + client->getHostname() + " 404 " + target + " :Cannot send to channel\r\n");
+			ERR_CANNOTSENDTOCHAN(client, channel->getName());
 			return;
 		}
 
 		std::vector<Client *> members = channel->getMembers();
-		for (std::vector<Client *>::iterator it = members.begin(); it != members.end(); ++it)
-			(*it)->response(":" + client->getNickname() + "!" + client->getUsername() + "@" + client->getHostname() + " PRIVMSG " + target + " :" + message + "\r\n");
+		std::vector<Client *>::iterator it = members.begin();
+		for (; it != members.end(); ++it)
+		{
+			if (*it != client)
+				(*it)->response(":" + client->getNickname() + "!" + client->getUsername() + "@" + client->getHostname() + " PRIVMSG " + target + " :" + message + "\r\n");
+		}
 	}
 	else
 	{
@@ -69,7 +75,7 @@ void Privmsg::execute(Client *client, std::list<string> args)
 
 		if (targetClient == NULL)
 		{
-			client->response(":" + client->getHostname() + " 401 " + target + " :No such nick/channel\r\n");
+			ERR_NOSUCHNICK(client, target);
 			return;
 		}
 		targetClient->response(":" + client->getNickname() + "!" + client->getUsername() + "@" + client->getHostname() + " PRIVMSG " + target + " :" + message + "\r\n");

@@ -8,6 +8,6 @@ Kick::~Kick()
 
 void Kick::execute(Client* client, std::list<string> args)
 {
-		(void)client;
+	(void)client;
 	(void)args;
 }
