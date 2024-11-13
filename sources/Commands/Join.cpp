@@ -29,18 +29,30 @@ void Join::execute(Client *client, std::list<string> args)
 	if (channel == NULL)
 	{
 		Channel *newChannel = new Channel();
-		server->addChannel(ch_name, newChannel);
-		client->response(":" + client->getNickname() + " JOIN " + ch_name + "\r\n");
-	}
-	else
-		client->response(":" + client->getNickname() + " JOIN" + ch_name + "\r\n");
-	
-	channel = server->getChannel(ch_name);
+		std::vector<Client *> members = newChannel->getMembers();
+		std::vector<Client *>::iterator names_it = members.begin();
+		string names;
 
-	if (channel->getTopic().empty())
-		client->response(client->getNickname() + " " + ch_name + " :No topic is set\r\n");
-	else
-		client->response(client->getNickname() + " " + ch_name + " :" + channel->getTopic() + "\r\n");
+		newChannel->addMember(client);
+		server->addChannel(ch_name, newChannel);
+
+		client->response(":" + client->getNickname() + " JOIN " + ch_name + "\r\n");
+		
+		if (newChannel->getTopic().empty())
+			client->response(client->getNickname() + " " + ch_name + " :No topic is set\r\n");
+		else
+			client->response(client->getNickname() + " " + ch_name + " :" + newChannel->getTopic() + "\r\n");
+
+		for (; names_it != members.end(); ++names_it)
+			names += (*names_it)->getNickname() + " ";
+		
+		names += client->getNickname();
+		
+		client->response(client->getNickname() + " -> " + ch_name + " :" + names + "\r\n");
+		client->response(client->getNickname() + " " + ch_name + ":End of NAMES list\r\n");
+		
+		return ;
+	}
 
 	if (channel->isInviteOnly())
 	{
@@ -62,10 +74,13 @@ void Join::execute(Client *client, std::list<string> args)
 
 	std::vector<Client *> members = channel->getMembers();
 
-	if (static_cast<int>(members.size()) == channel->getUserlimit())
+	if (channel->getMode() == 'l')
 	{
-		ERR_CHANNELUSERLIMIT(client, ch_name);
-		return ;
+		if (static_cast<int>(members.size()) == channel->getUserlimit())
+		{
+			ERR_CHANNELUSERLIMIT(client, ch_name);
+			return ;
+		}
 	}
 
 	std::vector<Channel *> client_channels = client->getInvitedChannels();
@@ -76,12 +91,17 @@ void Join::execute(Client *client, std::list<string> args)
 		return ;
 	}
 
-	
+	client->response(":" + client->getNickname() + " JOIN" + ch_name + "\r\n");
+
+	if (channel->getTopic().empty())
+		client->response(client->getNickname() + " " + ch_name + " :No topic is set\r\n");
+	else
+		client->response(client->getNickname() + " " + ch_name + " :" + channel->getTopic() + "\r\n");
 
 	string names;
 	std::vector<Client *>::iterator names_it = members.begin();
 
-	for (; names_it != members.end(); ++it)
+	for (; names_it != members.end(); ++names_it)
 		names += (*names_it)->getNickname() + " ";
 	
 	names += client->getNickname();
@@ -89,4 +109,5 @@ void Join::execute(Client *client, std::list<string> args)
 	client->response(client->getNickname() + " " + ch_name + ":End of NAMES list\r\n");
 
 	channel->addMember(client);
+	return ;
 }
