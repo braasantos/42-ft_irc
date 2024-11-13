@@ -244,5 +244,5 @@ bool Client::getBanned() const
 
 void Client::setBanned(bool banned)
 {
-	_banned = true;
+	_banned = banned;
 }

@@ -26,6 +26,22 @@ void Join::execute(Client *client, std::list<string> args)
 	Server *server = client->getServer();
 	Channel *channel = server->getChannel(ch_name);
 
+	if (channel == NULL)
+	{
+		Channel *newChannel = new Channel();
+		server->addChannel(ch_name, newChannel);
+		client->response(":" + client->getNickname() + " JOIN " + ch_name + "\r\n");
+	}
+	else
+		client->response(":" + client->getNickname() + " JOIN" + ch_name + "\r\n");
+	
+	channel = server->getChannel(ch_name);
+
+	if (channel->getTopic().empty())
+		client->response(client->getNickname() + " " + ch_name + " :No topic is set\r\n");
+	else
+		client->response(client->getNickname() + " " + ch_name + " :" + channel->getTopic() + "\r\n");
+
 	if (channel->isInviteOnly())
 	{
 		ERR_MODEINVITEONLY(client, ch_name);
@@ -60,19 +76,7 @@ void Join::execute(Client *client, std::list<string> args)
 		return ;
 	}
 
-	if (channel == NULL)
-	{
-		Channel *newChannel = new Channel();
-		server->addChannel(ch_name, channel);
-		client->response(":" + client->getNickname() + " JOIN " + ch_name + "\r\n");
-	}
-	else
-		client->response(":" + client->getNickname() + " JOIN" + ch_name + "\r\n");
 	
-	if (channel->getTopic().empty())
-		client->response(client->getNickname() + " " + ch_name + " :No topic is set\r\n");
-	else
-		client->response(client->getNickname() + " " + ch_name + " :" + channel->getTopic() + "\r\n");
 
 	string names;
 	std::vector<Client *>::iterator names_it = members.begin();
