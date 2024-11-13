@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmeirele <dmeirele@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: braasantos <braasantos@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/05 08:31:42 by dmeirele          #+#    #+#             */
-/*   Updated: 2024/11/09 23:13:38 by dmeirele         ###   ########.fr       */
+/*   Updated: 2024/11/13 17:50:01 by braasantos       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,8 @@ using std::string;
 #define ERR_INVALIDPARAMETERS(client) client->response("ERROR :Invalid Parameters\r\n");
 
 #define ERR_NOSUCHNICK(client, nickname) client->response(client->getHostname() + " " + client->getNickname() + " :No such nick/channel\r\n");
+#define ERR_CANNOTREMOVEUSER(client, nickname) client->response(client->getHostname() + " " + client->getNickname() + " :Cannot remove user\r\n");
+#define ERR_NOSUCHNICKONCH(client, nickname) client->response(client->getHostname() + " " + client->getNickname() + " :No such nick on channel\r\n");
 #define ERR_NOSUCHSERVER(client) client->response(client->getHostname() + " " + " :No such server\r\n");
 #define ERR_CANNOTSENDTOCHAN(client, ch_name) client->response(client->getHostname() + " " + ch_name + " :Cannot send to channel\r\n");
 #define ERR_NORECIPIENT(client, command) client->response(client->getHostname() + " :No recipient given " + command + "\r\n");

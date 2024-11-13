@@ -86,7 +86,6 @@ string Client::getRealname() const
 
 std::ostream &operator<<(std::ostream &os, Client const &client)
 {
-
 	os << "Client: " << endl;
 	os << "fd: " << client.getFd() << endl;
 	os << "nickname: " << client.getNickname() << endl;
