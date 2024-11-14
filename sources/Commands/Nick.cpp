@@ -61,6 +61,5 @@ void Nick::execute(Client *client, std::list<string> args)
 	}
 
 	client->setNickname(nickname);
-	client->response("Nick accepted\r\n");
 	return ;
 }

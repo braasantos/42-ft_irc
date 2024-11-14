@@ -34,6 +34,5 @@ void Pass::execute(Client* client, std::list<string> args)
 	}
 
 	client->setPassword(password);
-	client->response("Password accepted\r\n");
 	return ;
 }

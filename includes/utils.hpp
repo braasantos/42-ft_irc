@@ -81,3 +81,9 @@ using std::string;
 #define ERR_CANNOTSENDTOCHAN(client, ch_name) client->response(client->getHostname() + " " + ch_name + " :Cannot send to channel\r\n");
 #define ERR_NORECIPIENT(client, command) client->response(client->getHostname() + " :No recipient given " + command + "\r\n");
 #define ERR_NOTEXTTOSEND(client) client->response(client->getHostname() + " :No text to send\r\n");
+
+#define RPL_WELCOME(client) client->response("001:Welcome to the ModernIRC Network, " + client->getNickname() + "[!" + client->getUsername() + "@" + client->getHostname() + "]\r\n");
+#define RPL_YOURHOST(client) client->response("002:Your host is ModernIRC, running version v1.0\r\n");
+#define RPL_CREATED(client) client->response("003:This server was created <datetime>\r\n");
+#define RPL_MYINFO(client) client->response("004:MordenIRC v1.0 USERS/OPERATORS +itkol\r\n");
+#define RPL_ISUPPORT(client) client->response("005:MordernIRC CHANTYPES=# NICKLEN=8:are supported by this server\r\n");

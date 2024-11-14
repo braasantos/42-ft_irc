@@ -104,7 +104,7 @@ void Join::execute(Client *client, std::list<string> args)
 		}
 	}
 
-	client->response(":" + client->getNickname() + " JOIN" + ch_name + "\r\n");
+	client->response(":" + client->getNickname() + " JOIN " + ch_name + "\r\n");
 
 	if (channel->getTopic().empty())
 		client->response(client->getNickname() + " " + ch_name + " :No topic is set\r\n");
@@ -119,7 +119,7 @@ void Join::execute(Client *client, std::list<string> args)
 	
 	names += client->getNickname();
 	client->response(client->getNickname() + " -> " + ch_name + " :" + names + "\r\n");
-	client->response(client->getNickname() + " " + ch_name + ":End of NAMES list\r\n");
+	client->response(client->getNickname() + " " + ch_name + ":End of /NAMES list\r\n");
 
 	client->addInvitedChannel(channel);
 	channel->addMember(client);

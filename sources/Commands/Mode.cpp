@@ -12,7 +12,7 @@ void Mode::execute(Client *client, std::list<string> args)
 	(void)client;
 	(void)args;
 
-	/* cout << CYAN << "Better than GDB" << RESET << endl;
+	/*
 	if (args.size() < 1)
 	{
 		client->response(":" + client->getHostname() + " 461 MODE :Not enough parameters\r\n");
