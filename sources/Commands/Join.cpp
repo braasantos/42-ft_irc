@@ -8,7 +8,6 @@ Join::~Join() {}
 
 void Join::execute(Client *client, std::list<string> args)
 {
-
 	if (args.empty())
 	{
 		ERR_NEEDMOREPARAMS(client, "JOIN");
@@ -104,6 +103,8 @@ void Join::execute(Client *client, std::list<string> args)
 		}
 	}
 
+	if (channel->addMember(client))
+		return ;
 	client->response(":" + client->getNickname() + " JOIN " + ch_name + "\r\n");
 
 	if (channel->getTopic().empty())
@@ -122,6 +123,5 @@ void Join::execute(Client *client, std::list<string> args)
 	client->response(client->getNickname() + " " + ch_name + ":End of /NAMES list\r\n");
 
 	client->addInvitedChannel(channel);
-	channel->addMember(client);
 	return ;
 }

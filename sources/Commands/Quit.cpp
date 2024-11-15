@@ -27,7 +27,17 @@ void Quit::execute(Client *client, std::list<string> args)
 			channel->removeMember(client);
 		}
 	}
-
+	std::vector<pollfd> &fd_poll = server->getPollFd();
+    std::vector<pollfd>::iterator poll_it = fd_poll.begin();
+    pollfd client_poll = {client->getFd(), POLLIN, 0};
+    for(; poll_it != fd_poll.end(); ++poll_it)
+    {
+        if (poll_it->fd == client_poll.fd)
+        {
+            fd_poll.erase(poll_it);
+            break;
+        }
+    }
 	close(client->getFd());
 	server->removeClient(client->getFd());
 }

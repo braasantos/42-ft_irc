@@ -14,6 +14,7 @@ private:
 
 	string _key;
 	int _userLimit;
+	int _users;
 
 
 	std::vector<string> _operators;
@@ -35,7 +36,7 @@ public:
 	bool isOperator(Client *client) const;
 	bool isOnChannel(string nickname) const;
 	bool isInviteOnly() const;
-	void addMember(Client *client);
+	int addMember(Client *client);
 
 	void setMode(char mode);
 	void unsetMode(char mode);
@@ -45,6 +46,7 @@ public:
 	void removeOperator(Client *client);
 	void setUserLimit(int limit);
 	void unsetUserLimit();
-	void removeMember(Client *client);
-
+	int removeMember(Client *client);
+	int decrementUsers();
+	int incrementUsers();
 };

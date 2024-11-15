@@ -39,4 +39,5 @@ public:
 	void addChannel(const string &channel_name, Channel *channel);
 	void removeClient(int client_fd);
 	void handleMessageFromClient(int fd);
+	std::vector<pollfd> &getPollFd();
 };

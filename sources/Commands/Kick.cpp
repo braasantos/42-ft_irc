@@ -37,6 +37,12 @@ void Kick::execute(Client* client, std::list<string> args)
 	}
 
 	Server *server = client->getServer();
+	Channel *channel = server->getChannel(currChannel);
+	if (!channel->isOperator(client))
+	{
+		ERR_CANNOTREMOVEUSER(client, targetToKick)
+		return ;
+	}
 	if (currChannel[0] == '#' || currChannel[0] == '&')
 	{
 		Channel *channel = server->getChannel(currChannel);
@@ -56,13 +62,7 @@ void Kick::execute(Client* client, std::list<string> args)
 			return;
 		}
 	}
-	Channel *channel = server->getChannel(currChannel);
-	if (!channel->isOperator(client))
-	{
-		cout << client->getNickname() << endl;
-		ERR_CANNOTREMOVEUSER(client, targetToKick)
-		return ;
-	}
+	string clientName = client->getNickname();
 	std::vector<Client *> members = channel->getMembers();
 	for (std::vector<Client*>::iterator it = members.begin(); it != members.end(); ++it)
 	{
@@ -70,7 +70,7 @@ void Kick::execute(Client* client, std::list<string> args)
 		if (client->getNickname() == targetToKick)
 		{
 			channel->removeMember(*it);
-			cout << targetToKick + " was removed " + "for " + reason + " by " + client->getNickname() <<endl;
+			cout << targetToKick + " was removed " + "for " + reason + " by " + clientName <<endl;
 			return ;
 		}
     }

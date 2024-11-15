@@ -4,7 +4,7 @@
 /**
  * @brief Construct a new Channel:: Channel object
  */
-Channel::Channel() : _mode(0), _userLimit(0)
+Channel::Channel() : _mode(0), _userLimit(2), _users(0)
 {
 	cout << GREEN << "Channel object created." << RESET << endl;
 }
@@ -53,13 +53,42 @@ char Channel::getMode() const
 }
 
 /**
+ * @brief Check if the users limits and increment when one join
+ *
+ * @param client
+ */
+int Channel::incrementUsers()
+{
+	if (this->_users >= this->_userLimit)
+	{
+		cout << "CANNOT ADD MORE USERS\r\n";
+		return 1;
+	}
+	this->_users += 1;
+	return 0;
+}
+
+int Channel::decrementUsers()
+{
+	if (this->_users == 0)
+	{
+		cout << "CANNOT REMOVE MORE USERS\r\n";
+		return 1;
+	}
+	this->_users -= 1;
+	return 0;
+}
+/**
  * @brief Add a Member object
  *
  * @param client
  */
-void Channel::addMember(Client *client)
+int Channel::addMember(Client *client)
 {
+	if (this->incrementUsers())
+		return 1;
 	_members[client->getNickname()] = client;
+	return 0;
 }
 
 /**
@@ -184,7 +213,9 @@ void Channel::removeOperator(Client *client)
 
 void Channel::setUserLimit(int limit)
 {
+	cout << "limit 1 " << _userLimit << endl;
 	_userLimit = limit;
+	cout << "limit 2 " << _userLimit << endl;
 }
 
 /**
@@ -193,7 +224,8 @@ void Channel::setUserLimit(int limit)
 
 void Channel::unsetUserLimit()
 {
-	_userLimit = 0;
+	int num = this->_userLimit;
+	this->_userLimit = num;
 }
 
 /**
@@ -201,9 +233,12 @@ void Channel::unsetUserLimit()
  *
  * @param client
  */
-void Channel::removeMember(Client *client)
+int Channel::removeMember(Client *client)
 {
+	if (this->decrementUsers())
+		return 1;
 	_members.erase(client->getNickname());
+	return 0;
 }
 
 std::map<string, Client*> &Channel::getBanlist()

@@ -36,7 +36,6 @@ void Privmsg::execute(Client *client, std::list<string> args)
 	}
 
 	Server *server = client->getServer();
-
 	if (target[0] == '#' || target[0] == '&')
 	{
 		Channel *channel = server->getChannel(target);
@@ -45,13 +44,11 @@ void Privmsg::execute(Client *client, std::list<string> args)
 			ERR_NOSUCHNICK(client, target);
 			return;
 		}
-
 		if (!channel->isOnChannel(client->getNickname()))
 		{
 			ERR_CANNOTSENDTOCHAN(client, channel->getName());
 			return;
 		}
-
 		std::vector<Client *> members = channel->getMembers();
 		std::vector<Client *>::iterator it = members.begin();
 		for (; it != members.end(); ++it)

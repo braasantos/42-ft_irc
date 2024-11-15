@@ -20,7 +20,9 @@ Server::Server()
 
 Server::~Server()
 {
-	delete [] _commandHandler;
+	close(this->_socketfd);
+
+	delete _commandHandler;
 
 	for (std::map<int, Client *>::iterator it = _clients.begin(); it != _clients.end(); ++it)
 	{
@@ -28,7 +30,8 @@ Server::~Server()
 		delete it->second;
 	}
 
-	close(this->_socketfd);
+	_clients.clear();
+	_pollfds.clear();
 	cout << GREEN << "Server stopped" << RESET << endl;
 }
 
@@ -46,7 +49,12 @@ void Server::createSocket(int port)
 		close(this->_socketfd);
 		throw std::runtime_error("Error: socket creation failed");
 	}
-
+	int opt = 1;
+	if (setsockopt(this->_socketfd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt)) == -1)
+	{
+		close(this->_socketfd);
+		throw std::runtime_error("Error: Cannot set socket options");
+	}
 	_server_sockIPV4.sin_family = AF_INET;
 	_server_sockIPV4.sin_addr.s_addr = INADDR_ANY;
 	_server_sockIPV4.sin_port = htons(port);
@@ -298,4 +306,9 @@ string Server::getPassword() const
 void Server::setPassword(const string password)
 {
 	_password = password;
+}
+
+std::vector<pollfd> &Server::getPollFd()
+{
+	return (_pollfds);
 }
