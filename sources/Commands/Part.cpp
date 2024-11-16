@@ -9,6 +9,12 @@ Part::~Part() {}
 
 void Part::execute(Client *client, std::list<string> args)
 {
+	if (!client->isAuthenticated())
+	{
+		client->response(":server 451 INVITE :You have not registered\r\n");
+		return;
+	}
+
 	if (args.size() < 1)
 	{
 		client->response(":" + client->getHostname() + " 461 PART :Not enough parameters\r\n");

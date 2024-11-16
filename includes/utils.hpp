@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: braasantos <braasantos@student.42.fr>      +#+  +:+       +#+        */
+/*   By: dmeirele <dmeirele@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/05 08:31:42 by dmeirele          #+#    #+#             */
-/*   Updated: 2024/11/13 17:50:01 by braasantos       ###   ########.fr       */
+/*   Updated: 2024/11/16 20:34:53 by dmeirele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@
 #include <netdb.h>
 #include <csignal>
 #include <iostream>
+#include <ctime>
+
 
 using std::cout;
 using std::endl;
@@ -82,8 +84,10 @@ using std::string;
 #define ERR_NORECIPIENT(client, command) client->response(client->getHostname() + " :No recipient given " + command + "\r\n");
 #define ERR_NOTEXTTOSEND(client) client->response(client->getHostname() + " :No text to send\r\n");
 
-#define RPL_WELCOME(client) client->response("001:Welcome to the ModernIRC Network, " + client->getNickname() + "[!" + client->getUsername() + "@" + client->getHostname() + "]\r\n");
-#define RPL_YOURHOST(client) client->response("002:Your host is ModernIRC, running version v1.0\r\n");
-#define RPL_CREATED(client) client->response("003:This server was created <datetime>\r\n");
-#define RPL_MYINFO(client) client->response("004:MordenIRC v1.0 USERS/OPERATORS +itkol\r\n");
-#define RPL_ISUPPORT(client) client->response("005:MordernIRC CHANTYPES=# NICKLEN=8:are supported by this server\r\n");
+#define RPL_WELCOME(client) client->response(":server 001 " + client->getNickname() + " :Welcome to the Internet Relay Network :" + client->getNickname() + "!" + client->getUsername() + "@" + client->getHostname() + "\r\n");
+#define RPL_YOURHOST(client) client->response(":server 002 " + client->getNickname() + " :Your host is ModernIRC, running version v1.0\r\n");
+#define RPL_CREATED(client, server) client->response(":server 003 " + client->getNickname() + " :This server was created " + server->getDataTime() + "\r\n");
+#define RPL_MYINFO(client) client->response(":server 004 " + client->getNickname() + " InspIRCd-3 BDHIORSTWcdghikorswxz ACIJKMNOPQRSTYabceghiklmnopqrstvz :IJYabeghkloqv\r\n");
+#define RPL_ISUPPORT(client) client->response(":server 005 " + client->getNickname() + " CHANMODES=Ibeg,k,Jl,ACKMNOPQRSTiprstz :are supported by this server\r\n");
+#define RPL_INFO(client) client->response(":server 371 " + client->getNickname() + " :User is authenticated\r\n");
+#define RPL_MOTDSTART(client) client->response(":server 375 " + client->getNickname() + " :- " + client->getHostname() + " Message of the day - \r\n");

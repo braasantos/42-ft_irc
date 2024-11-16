@@ -10,6 +10,13 @@ Invite::~Invite()
 
 void Invite::execute(Client* client, std::list<string> args)
 {
+
+	if (!client->isAuthenticated())
+	{
+		client->response(":server 451 INVITE :You have not registered\r\n");
+		return;
+	}
+
 	if (args.size() < 2)
 	{
 		client->response("461 INVITE :Not enough parameters\r\n");

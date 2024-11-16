@@ -92,6 +92,7 @@ void Server::startServerIPV4()
 	pollfd serverfd = {this->_socketfd, POLLIN, 0};
 	_pollfds.push_back(serverfd);
 	cout << GREEN << "Server started and running" << RESET << endl;
+	setServerCreatedTime();
 
 	while (true)
 	{
@@ -227,7 +228,6 @@ Client *Server::getClient(const int &fd)
 	return (NULL);
 }
 
-
 /**
  * @brief Add a channel to the server
  *
@@ -311,4 +311,30 @@ void Server::setPassword(const string password)
 std::vector<pollfd> &Server::getPollFd()
 {
 	return (_pollfds);
+}
+
+/**
+ * @brief Get the Data Time object
+ *
+ * @return string
+ */
+
+string Server::getDataTime() const
+{
+	std::ostringstream oss;
+	struct tm *timeinfo = std::localtime(&_serverCreatedTime);
+	char buffer[80];
+	std::strftime(buffer, 80, "%Y-%m-%d %H:%M:%S", timeinfo);
+	oss << buffer;
+	return oss.str();
+}
+
+/**
+ * @brief Set the Server Created Time object
+ *
+ */
+
+void Server::setServerCreatedTime()
+{
+	_serverCreatedTime = std::time(0);
 }

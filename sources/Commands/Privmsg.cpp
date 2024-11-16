@@ -12,10 +12,17 @@ Privmsg::~Privmsg()
 
 void Privmsg::execute(Client *client, std::list<string> args)
 {
+
+	if (!client->isAuthenticated())
+	{
+		client->response(":server 451 INVITE :You have not registered\r\n");
+		return;
+	}
+
 	if (args.empty())
 	{
 		ERR_NORECIPIENT(client, "PRIVMSG");
-		return ;
+		return;
 	}
 
 	string target = args.front();

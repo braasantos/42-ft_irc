@@ -18,6 +18,7 @@ private:
 	std::map<int, Client *> _clients;
 	std::map<string, Channel *> _channels;
 	CommandHandler *_commandHandler;
+	time_t _serverCreatedTime;
 
 public:
 	Server();
@@ -27,6 +28,7 @@ public:
 	void startServerIPV4();
 
 	string getPassword() const;
+	string getDataTime() const;
 	Channel *getChannel(const string &channel_name);
 	Client *getClient(const int &fd);
 	std::map<string, Channel *> &getChannels();
@@ -39,5 +41,6 @@ public:
 	void addChannel(const string &channel_name, Channel *channel);
 	void removeClient(int client_fd);
 	void handleMessageFromClient(int fd);
+	void setServerCreatedTime();
 	std::vector<pollfd> &getPollFd();
 };

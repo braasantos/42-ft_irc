@@ -70,11 +70,5 @@ void User::execute(Client* client, std::list<string> args)
 	}
 
 	client->setRealname(realname);
-	client->setAuthenticated(true);
-
-	RPL_WELCOME(client);
-	RPL_YOURHOST(client);
-	RPL_CREATED(client);
-	RPL_MYINFO(client);
-	RPL_ISUPPORT(client);
+	return ;
 }
