@@ -11,7 +11,7 @@ void Part::execute(Client *client, std::list<string> args)
 {
 	if (!client->isAuthenticated())
 	{
-		client->response(":server 451 INVITE :You have not registered\r\n");
+		ERR_AUTH(client);
 		return;
 	}
 

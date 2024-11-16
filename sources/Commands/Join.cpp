@@ -11,7 +11,7 @@ void Join::execute(Client *client, std::list<string> args)
 
 	if (!client->isAuthenticated())
 	{
-		client->response(":server 451 INVITE :You have not registered\r\n");
+		ERR_AUTH(client);
 		return;
 	}
 
@@ -73,7 +73,7 @@ void Join::execute(Client *client, std::list<string> args)
 
 	if (channel->isInviteOnly())
 	{
-		ERR_MODEINVITEONLY(client, ch_name);
+		ERR_INVITEONLYCHAN(client, ch_name);
 		return ;
 	}
 
@@ -84,7 +84,7 @@ void Join::execute(Client *client, std::list<string> args)
 	{
 		if (it->first == client->getNickname())
 		{
-			ERR_BANNEDFROMCHAT(client, ch_name);
+			ERR_BANNEDFROMCHAN(client, ch_name);
 			return ;
 		}
 	}
