@@ -11,6 +11,7 @@
 Server::Server()
 {
 	_commandHandler = new CommandHandler();
+	_serverName = "42-ModernIRC";
 }
 
 /**
@@ -337,4 +338,15 @@ string Server::getDataTime() const
 void Server::setServerCreatedTime()
 {
 	_serverCreatedTime = std::time(0);
+}
+
+/**
+ * @brief Get the Server Name object
+ *
+ * @return string
+ */
+
+string Server::getServerName() const
+{
+	return (_serverName);
 }

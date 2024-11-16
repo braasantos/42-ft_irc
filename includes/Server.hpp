@@ -11,8 +11,9 @@ class Server
 {
 private:
 	int _port;
-	string _password;
 	int _socketfd;
+	string _password;
+	string _serverName;
 	sockaddr_in _server_sockIPV4;
 	std::vector<pollfd> _pollfds;
 	std::map<int, Client *> _clients;
@@ -29,6 +30,8 @@ public:
 
 	string getPassword() const;
 	string getDataTime() const;
+	string getServerName() const;
+
 	Channel *getChannel(const string &channel_name);
 	Client *getClient(const int &fd);
 	std::map<string, Channel *> &getChannels();

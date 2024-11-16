@@ -6,7 +6,7 @@
 /*   By: dmeirele <dmeirele@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/05 08:31:42 by dmeirele          #+#    #+#             */
-/*   Updated: 2024/11/16 22:48:16 by dmeirele         ###   ########.fr       */
+/*   Updated: 2024/11/16 23:36:57 by dmeirele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,8 +83,8 @@ using std::string;
 #define ERR_NORECIPIENT(client, command) client->response(":server 411 " + client->getNickname() + " :No recipient given " + command + "\r\n");
 #define ERR_NOTEXTTOSEND(client) client->response(":server 412 " + client->getNickname() + " :No text to send\r\n");
 
-#define RPL_WELCOME(client) client->response(":server 001 " + client->getNickname() + " :Welcome to the Internet Relay Network :" + client->getNickname() + "!" + client->getUsername() + "@" + client->getHostname() + "\r\n");
-#define RPL_YOURHOST(client) client->response(":server 002 " + client->getNickname() + " :Your host is ModernIRC, running version v1.0\r\n");
+#define RPL_WELCOME(client) client->response(":server 001 " + client->getNickname() + " :Welcome to 42-ModernIRC :" + client->getNickname() + "!" + client->getUsername() + "@" + client->getHostname() + "\r\n");
+#define RPL_YOURHOST(client) client->response(":server 002 " + client->getNickname() + " :Your host is 42-ModernIRC, running version v1.0\r\n");
 #define RPL_CREATED(client, server) client->response(":server 003 " + client->getNickname() + " :This server was created " + server->getDataTime() + "\r\n");
 #define RPL_MYINFO(client) client->response(":server 004 " + client->getNickname() + " InspIRCd-3 BDHIORSTWcdghikorswxz ACIJKMNOPQRSTYabceghiklmnopqrstvz :IJYabeghkloqv\r\n");
 #define RPL_ISUPPORT(client) client->response(":server 005 " + client->getNickname() + " CHANMODES=Ibeg,k,Jl,ACKMNOPQRSTiprstz :are supported by this server\r\n");
