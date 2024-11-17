@@ -46,11 +46,10 @@ void Mode::execute(Client *client, std::list<string> args)
 		bool adding = false;
 		for (size_t i = 0; i < modeString.size(); i++)
 		{
-			// string nickname;
-			// const std::map<int, Client *> *clients = NULL;
-			// Client *targetClient = NULL;
+			string nickname;
+			const std::map<int, Client *> *clients = NULL;
+			Client *targetClient = NULL;
 			char mode = modeString[i];
-			cout << "mode " << mode << endl;
 			if (mode == '+')
 				adding = true;
 			else if (mode == '-')
@@ -71,58 +70,59 @@ void Mode::execute(Client *client, std::list<string> args)
 				// 	else
 				// 		channel->unsetMode('t');
 				// 	break;
-				// case 'k':
-				// 	if (adding)
-				// 	{
-				// 		if (args.empty())
-				// 		{
-				// 			client->response(":" + client->getHostname() + " 461 MODE :Not enough parameters\r\n");
-				// 			return;
-				// 		}
-				// 		string key = args.front();
-				// 		args.pop_front();
-				// 		channel->setKey(key);
-				// 	}
-				// 	else
-				// 		channel->unsetKey();
-				// 	break;
-				// case 'o':
-				// 	if (args.empty())
-				// 	{
-				// 		client->response(":" + client->getHostname() + " 461 MODE :Not enough parameters\r\n");
-				// 		return;
-				// 	}
-				// 	nickname = args.front();
-				// 	args.pop_front();
-				// 	clients = &server->getClients();
-				// 	targetClient = NULL;
-				// 	for (std::map<int, Client *>::const_iterator it = clients->begin(); it != clients->end(); ++it)
-				// 	{
-				// 		if (it->second->getNickname() == nickname)
-				// 		{
-				// 			targetClient = it->second;
-				// 			break;
-				// 		}
-				// 	}
-				// 	if (targetClient == NULL)
-				// 	{
-				// 		client->response(":" + client->getHostname() + " 401 " + nickname + " :No such nick/channel\r\n");
-				// 		return;
-				// 	}
-				// 	if (adding)
-				// 		channel->addOperator(targetClient);
-				// 	else
-				// 		channel->removeOperator(targetClient);
-				// 	break;
+				case 'k':
+					if (adding)
+					{
+						if (args.empty())
+						{
+							client->response(":" + client->getHostname() + " 461 MODE :Not enough parameters\r\n");
+							return;
+						}
+						string key = args.front();
+						cout << key << endl;
+						args.pop_front();
+						channel->setKey(key);
+					}
+					else
+						channel->unsetKey();
+					break;
+				case 'o':
+					if (args.empty())
+					{
+						client->response(":" + client->getHostname() + " 461 MODE :Not enough parameters\r\n");
+						return;
+					}
+					nickname = args.front();
+					args.pop_front();
+					clients = &server->getClients();
+					targetClient = NULL;
+					for (std::map<int, Client *>::const_iterator it = clients->begin(); it != clients->end(); ++it)
+					{
+						if (it->second->getNickname() == nickname)
+						{
+							targetClient = it->second;
+							cout << targetClient->getNickname() << endl;
+							break;
+						}
+					}
+					if (targetClient == NULL)
+					{
+						client->response(":" + client->getHostname() + " 401 " + nickname + " :No such nick/channel\r\n");
+						return;
+					}
+					if (adding)
+						channel->addOperator(targetClient);
+					else
+						channel->removeOperator(targetClient);
+					break;
 				case 'l':
 					if (adding)
 					{
-						cout << "adding on" << endl;
-						// if (args.empty())
-						// {
-						// 	client->response(":" + client->getHostname() + " 461 MODE :Not enough parameters\r\n");
-						// 	return;
-						// }
+						if (args.empty())
+						{
+							client->response(":" + client->getHostname() + " 461 MODE :Not enough parameters\r\n");
+							return;
+						}
 						if (args.empty())
 						{
 							cout << "NO ARGUMENTS FOUND FOR AVALIABLE MODE\r\n";
@@ -131,7 +131,6 @@ void Mode::execute(Client *client, std::list<string> args)
 						std::stringstream ss(args.front());
 						int limit;
 						ss >> limit;
-						cout << limit << endl;
 						if (ss.fail())
 						{
 							client->response(":" + client->getHostname() + " 461 MODE :Invalid parameter\r\n");

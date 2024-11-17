@@ -4,7 +4,7 @@
 /**
  * @brief Construct a new Channel:: Channel object
  */
-Channel::Channel() : _mode(0), _userLimit(2), _users(0)
+Channel::Channel() : _mode(0), _userLimit(2), _users(0), hasK(false)
 {
 	cout << GREEN << "Channel object created." << RESET << endl;
 }
@@ -172,6 +172,7 @@ void Channel::unsetMode(char mode)
 void Channel::setKey(string key)
 {
 	_key = key;
+	this->hasK = true;
 }
 
 /**
@@ -181,6 +182,7 @@ void Channel::setKey(string key)
 void Channel::unsetKey()
 {
 	_key.clear();
+	this->hasK = false;
 }
 
 /**
@@ -249,4 +251,14 @@ std::map<string, Client*> &Channel::getBanlist()
 int Channel::getUserlimit() const
 {
 	return (_userLimit);
+}
+
+bool Channel::hasKey()
+{
+	return (this->hasK);
+}
+
+string Channel::getKey()
+{
+	return (this->_key);
 }

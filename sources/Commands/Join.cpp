@@ -15,7 +15,7 @@ void Join::execute(Client *client, std::list<string> args)
 	}
 
 	string ch_name = args.front();
-
+	args.pop_front();
 	if (ch_name[0] != '#')
 	{
 		ERR_NOSUCHCHANNEL(client, ch_name);
@@ -23,7 +23,6 @@ void Join::execute(Client *client, std::list<string> args)
 	}
 
 	std::vector<Channel *> client_channels = client->getInvitedChannels();
-
 	if (client_channels.size() == client->getChannelLimit())
 	{
 		ERR_TOOMANYCHANNELS(client, ch_name);
@@ -63,6 +62,29 @@ void Join::execute(Client *client, std::list<string> args)
 		
 		return ;
 	}
+	if (channel->hasKey())
+	{
+		if (args.empty())
+		{
+			ERR_NEEDMOREPARAMS(client, "JOIN");
+			return ;
+		}
+		else
+		{
+			string key = args.front();
+			cout << key << endl;
+			if (key.empty())
+			{
+				cout << "ERROR\r\n";
+				return;
+			}
+			if (key != channel->getKey())
+			{
+				cout << "ERROR\r\n";
+				return;
+			}
+		}
+	}
 
 	if (channel->isInviteOnly())
 	{
@@ -93,15 +115,25 @@ void Join::execute(Client *client, std::list<string> args)
 		}
 	}
 
-	std::vector<Channel *>::iterator ch_it = client_channels.begin();
-	for (; ch_it != client_channels.end(); ++ch_it)
+	for(std::vector<Client *>::iterator it = members.begin(); it != members.end(); ++it)
 	{
-		if (*ch_it == channel)
+		if (*it == client)
 		{
 			ERR_ALREADYJOINED(client, ch_name);
 			return;
 		}
 	}
+	// std::vector<Channel *>::iterator ch_it = client_channels.begin();
+	// for (; ch_it != client_channels.end(); ++ch_it)
+	// {
+	// 	if (*ch_it == channel)
+	// 	{
+	// 		ERR_ALREADYJOINED(client, ch_name);
+	// 		return;
+	// 	}
+	// }
+
+
 
 	if (channel->addMember(client))
 		return ;

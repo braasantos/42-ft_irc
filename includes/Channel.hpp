@@ -15,6 +15,7 @@ private:
 	string _key;
 	int _userLimit;
 	int _users;
+	bool hasK;
 
 
 	std::vector<string> _operators;
@@ -49,4 +50,6 @@ public:
 	int removeMember(Client *client);
 	int decrementUsers();
 	int incrementUsers();
+	bool hasKey();
+	string getKey();
 };
