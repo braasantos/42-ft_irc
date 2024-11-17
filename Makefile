@@ -15,7 +15,7 @@ FILES = main.cpp \
 		Client.cpp \
 		Invite.cpp Join.cpp Kick.cpp Mode.cpp Nick.cpp \
 		Part.cpp Pass.cpp Privmsg.cpp Quit.cpp Topic.cpp \
-		User.cpp \
+		User.cpp Authenticate.cpp \
 
 OBJECTS = $(addprefix $(OBJECTS_DIRECTORY)/, $(FILES:%.cpp=%.o))
 

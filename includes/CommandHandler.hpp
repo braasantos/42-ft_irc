@@ -14,6 +14,7 @@
 #include "Quit.hpp"
 #include "Topic.hpp"
 #include "User.hpp"
+#include "Authenticate.hpp"
 #include "Server.hpp"
 
 class CommandHandler

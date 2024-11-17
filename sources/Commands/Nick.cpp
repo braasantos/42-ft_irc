@@ -11,16 +11,23 @@ Nick::~Nick()
 
 void Nick::execute(Client *client, std::list<string> args)
 {
+
+	if (client->isAuthenticated())
+	{
+		ERR_ALREADYREGISTERED(client);
+		return;
+	}
+
 	if (client->getPassword().empty())
 	{
 		ERR_PASSREQUIRED(client);
-		return ;
+		return;
 	}
 
 	if (args.size() == 0)
 	{
 		ERR_NONICKNAMEGIVEN(client);
-		return ;
+		return;
 	}
 
 	if (args.size() > 1)
@@ -32,9 +39,9 @@ void Nick::execute(Client *client, std::list<string> args)
 			args.pop_front();
 		}
 		ERR_ERRONEUSNICKNAME(client, invalid_nick);
-		return ;
+		return;
 	}
-	
+
 	string nickname = args.front();
 	string::iterator str_it = nickname.begin();
 
@@ -50,16 +57,16 @@ void Nick::execute(Client *client, std::list<string> args)
 	Server *server = client->getServer();
 	std::map<int, Client *> &clients = server->getClients();
 	std::map<int, Client *>::iterator it = clients.begin();
-	
+
 	for (; it != clients.end(); ++it)
 	{
 		if (it->second->getNickname() == nickname)
 		{
 			ERR_NICKNAMEINUSE(client, nickname);
-			return ;
+			return;
 		}
 	}
 
 	client->setNickname(nickname);
-	return ;
+	return;
 }

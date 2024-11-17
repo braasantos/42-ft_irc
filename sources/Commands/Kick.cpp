@@ -10,6 +10,12 @@ Kick::~Kick()
 
 void Kick::execute(Client* client, std::list<string> args)
 {
+	if (!client->isAuthenticated())
+	{
+		ERR_AUTH(client);
+		return;
+	}
+
 	if (args.empty())
 	{
 		ERR_NORECIPIENT(client, "PRIVMSG");

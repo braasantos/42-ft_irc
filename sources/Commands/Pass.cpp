@@ -1,28 +1,30 @@
 #include "../../includes/Pass.hpp"
 
 Pass::Pass()
-{}
+{
+}
 
 Pass::~Pass()
-{}
+{
+}
 
-void Pass::execute(Client* client, std::list<string> args)
+void Pass::execute(Client *client, std::list<string> args)
 {
 
 	if (client->isAuthenticated())
 	{
 		ERR_ALREADYREGISTERED(client);
-		return ;
+		return;
 	}
 
 	if (args.size() == 0)
 	{
 		ERR_NEEDMOREPARAMS(client, "PASS");
-		return ;
+		return;
 	}
 
 	string password = args.front();
-	Server* server = client->getServer();
+	Server *server = client->getServer();
 
 	if (password != client->getServer()->getPassword())
 	{
@@ -34,5 +36,5 @@ void Pass::execute(Client* client, std::list<string> args)
 	}
 
 	client->setPassword(password);
-	return ;
+	return;
 }

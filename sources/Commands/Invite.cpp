@@ -11,6 +11,13 @@ Invite::~Invite()
 
 void Invite::execute(Client* client, std::list<string> args)
 {
+
+	if (!client->isAuthenticated())
+	{
+		ERR_AUTH(client);
+		return;
+	}
+
 	if (args.size() < 2)
 	{
 		client->response("461 INVITE :Not enough parameters\r\n");

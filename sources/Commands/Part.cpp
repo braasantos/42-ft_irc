@@ -9,6 +9,12 @@ Part::~Part() {}
 
 void Part::execute(Client *client, std::list<string> args)
 {
+	if (!client->isAuthenticated())
+	{
+		ERR_AUTH(client);
+		return;
+	}
+
 	if (args.size() < 1)
 	{
 		client->response(":" + client->getHostname() + " 461 PART :Not enough parameters\r\n");
