@@ -23,6 +23,7 @@ class Client
 		bool _banned;
 		bool _authenticated;
 
+		bool _invited;
 		std::vector<Channel*> invited_channels;
 
 		Server* _server;
@@ -59,7 +60,8 @@ class Client
 		void setAuthenticated(bool authenticated);
 		
 		void response(string message);
-
+		void setInvited(bool invited);
+		bool getInvited();
 };
 
 std::ostream &operator<<(std::ostream &os, Client const &client);

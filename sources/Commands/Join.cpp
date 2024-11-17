@@ -85,13 +85,14 @@ void Join::execute(Client *client, std::list<string> args)
 			}
 		}
 	}
-
 	if (channel->isInviteOnly())
 	{
-		ERR_MODEINVITEONLY(client, ch_name);
-		return ;
+		if (!client->getInvited())
+		{
+			ERR_MODEINVITEONLY(client, ch_name);
+			return ;
+		}
 	}
-
 	std::map<string, Client *> banlist = channel->getBanlist();
 	std::map<string, Client*>::iterator it = banlist.begin();
 

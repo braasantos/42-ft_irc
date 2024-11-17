@@ -22,6 +22,7 @@ Client::Client(string hostname, uint16_t port, int fd, Server *server)
 	_banned = false;
 	_authenticated = false;
 	_server = server;
+	_invited = false;
 }
 
 /**
@@ -249,4 +250,14 @@ void Client::setBanned(bool banned)
 void Client::addInvitedChannel(Channel* channel)
 {
 	invited_channels.push_back(channel);
+}
+
+void Client::setInvited(bool invited)
+{
+	_invited = invited;
+}
+
+bool Client::getInvited()
+{
+	return _invited;
 }

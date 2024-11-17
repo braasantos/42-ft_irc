@@ -58,12 +58,12 @@ void Mode::execute(Client *client, std::list<string> args)
 			{
 				switch (mode)
 				{
-				// case 'i':
-				// 	if (adding)
-				// 		channel->setMode('i');
-				// 	else
-				// 		channel->unsetMode('i');
-				// 	break;
+				case 'i':
+					if (adding)
+						channel->setMode('i');
+					else
+						channel->unsetMode('i');
+					break;
 				// case 't':
 				// 	if (adding)
 				// 		channel->setMode('t');
