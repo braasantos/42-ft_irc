@@ -135,7 +135,7 @@ void Join::execute(Client *client, std::list<string> args)
 
 
 
-	std::vector<Client *> members = channel->getMembers();
+	// std::vector<Client *> members = channel->getMembers();
 	string names;
 	for (std::vector<Client *>::iterator it = members.begin(); it != members.end(); ++it)
 	{
