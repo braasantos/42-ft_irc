@@ -45,8 +45,24 @@ void Join::execute(Client *client, std::list<string> args)
 		channel->addMember(client);
 		channel->addOperator(client);
 		client->addInvitedChannel(channel);
-		client->response(":" + client->getNickname() + " JOIN " + ch_name + "\r\n");
-		client->response(":" + server->getServerName() + " 331 " + client->getNickname() + " " + ch_name + " :No topic is set\r\n");
+    	client->response(":" + client->getNickname() + "!" + client->getUsername() + "@" + client->getHostname() + " JOIN " + ch_name + "\r\n");
+    	client->response(":server 331 " + client->getNickname() + " " + ch_name + " :No topic is set\r\n");
+
+		std::string names;
+		std::vector<Client *> members = channel->getMembers();
+
+		for (std::vector<Client *>::iterator it = members.begin(); it != members.end(); ++it)
+		{
+			if (channel->isOperator(*it))
+				names += "@" + (*it)->getNickname() + " ";
+			else
+				names += "+" + (*it)->getNickname() + " ";
+		}
+
+		client->response(":server 353 " + client->getNickname() + " = " + ch_name + " :" + names + "\r\n");
+		client->response(":server 366 " + client->getNickname() + " " + ch_name + " :End of /NAMES list\r\n");
+
+		return;
 	}
 	if (channel->hasKey())
 	{
@@ -75,8 +91,7 @@ void Join::execute(Client *client, std::list<string> args)
 	{
 		if (!client->getInvited())
 		{
-			cout << "INVITE ONLY\r\n";
-			// ERR_MODEINVITEONLY(client, ch_name);
+			ERR_INVITEONLYCHAN(client, ch_name);
 			return ;
 		}
 	}
@@ -117,26 +132,15 @@ void Join::execute(Client *client, std::list<string> args)
 			return;
 		}
 
-		client->response(":" + client->getNickname() + " JOIN " + ch_name + "\r\n");
+    	client->response(":" + client->getNickname() + "!" + client->getUsername() + "@" + client->getHostname() + " JOIN " + ch_name + "\r\n");
+		client->response(":server JOIN " + client->getNickname() + " " + ch_name + "\r\n");
 
 		if (channel->getTopic().empty())
-			client->response(":" + server->getServerName() + " 331 " + client->getNickname() + " " + ch_name + " :No topic is set\r\n");
+    		client->response(":server 331 " + client->getNickname() + " " + ch_name + " :No topic is set\r\n");
 		else
-			client->response(":" + server->getServerName() + " 332 " + client->getNickname() + " " + ch_name + " :" + channel->getTopic() + "\r\n");
+			client->response(":server 332 " + client->getNickname() + " " + ch_name + " :" + channel->getTopic() + "\r\n");
 	}
-	// std::vector<Channel *>::iterator ch_it = client_channels.begin();
-	// for (; ch_it != client_channels.end(); ++ch_it)
-	// {
-	// 	if (*ch_it == channel)
-	// 	{
-	// 		ERR_ALREADYJOINED(client, ch_name);
-	// 		return;
-	// 	}
-	// }
 
-
-
-	// std::vector<Client *> members = channel->getMembers();
 	string names;
 	for (std::vector<Client *>::iterator it = members.begin(); it != members.end(); ++it)
 	{
@@ -146,8 +150,8 @@ void Join::execute(Client *client, std::list<string> args)
 			names += "+" + (*it)->getNickname() + " ";
 	}
 
-	client->response(":" + server->getServerName() + " 353 " + client->getNickname() + " = " + ch_name + " :" + names + "\r\n");
-	client->response(":" + server->getServerName() + " 366 " + client->getNickname() + " " + ch_name + " :End of /NAMES list\r\n");
+	client->response(":server 353 " + client->getNickname() + " = " + ch_name + " :" + names + "\r\n");
+	client->response(":server 366 " + client->getNickname() + " " + ch_name + " :End of /NAMES list\r\n");
 
 	client->addInvitedChannel(channel);
 }

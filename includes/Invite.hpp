@@ -1,6 +1,8 @@
 #pragma once
 
 #include "Command.hpp"
+#include "Client.hpp"
+#include "utils.hpp"
 
 class Invite : public Command
 {

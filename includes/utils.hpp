@@ -90,3 +90,9 @@ using std::string;
 #define RPL_ISUPPORT(client) client->response(":server 005 " + client->getNickname() + " CHANMODES=Ibeg,k,Jl,ACKMNOPQRSTiprstz :are supported by this server\r\n");
 #define RPL_INFO(client) client->response(":server 371 " + client->getNickname() + " :User is authenticated\r\n");
 #define RPL_MOTDSTART(client) client->response(":server 375 " + client->getNickname() + " :- " + client->getHostname() + " Message of the day - \r\n");
+
+#define ERR_NOORIGIN(client) client->response(":server 409 :No origin specified\r\n");
+
+#define RPL_WHOREPLY(client, server, channel) client->response(":server 352 " + client->getNickname() + " " + channel + " " + client->getUsername() + " " + client->getHostname() + " " + server->getServerName() + " " + client->getNickname() + " H :0 :" + client->getRealname() + "\r\n");
+#define RPL_ENDOFWHO(client, mask) client->response(":server 315 " + client->getNickname() + " " + mask + " :End of WHO list\r\n");
+

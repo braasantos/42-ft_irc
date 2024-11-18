@@ -15,6 +15,8 @@
 #include "Topic.hpp"
 #include "User.hpp"
 #include "Authenticate.hpp"
+#include "Ping.hpp"
+#include "Who.hpp"
 #include "Server.hpp"
 
 class CommandHandler

@@ -15,6 +15,8 @@ CommandHandler::CommandHandler()
 	_commands["TOPIC"] = new Topic();
 	_commands["USER"] = new User();
 	_commands["AUTH"] = new Authenticate();
+	_commands["PING"] = new Ping();
+	_commands["WHO"] = new Who();
 }
 
 CommandHandler::~CommandHandler()
