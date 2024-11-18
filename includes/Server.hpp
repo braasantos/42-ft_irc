@@ -46,4 +46,6 @@ public:
 	void handleMessageFromClient(int fd);
 	void setServerCreatedTime();
 	std::vector<pollfd> &getPollFd();
+	int getSocketFd();
+	CommandHandler* getCommandHandler();
 };

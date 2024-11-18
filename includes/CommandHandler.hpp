@@ -29,4 +29,5 @@ class CommandHandler
 		~CommandHandler();
 
 		void handleCommand(string command, Client *client);
+		std::map<string, Command*> getCommands();
 };

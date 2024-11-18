@@ -61,7 +61,6 @@ void Join::execute(Client *client, std::list<string> args)
 
 		client->response(":server 353 " + client->getNickname() + " = " + ch_name + " :" + names + "\r\n");
 		client->response(":server 366 " + client->getNickname() + " " + ch_name + " :End of /NAMES list\r\n");
-
 		return;
 	}
 	if (channel->hasKey())

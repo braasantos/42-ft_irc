@@ -25,13 +25,25 @@ CommandHandler::~CommandHandler()
 
 void CommandHandler::handleCommand(string command, Client *client)
 {
+
 	if (command[0] == ':')
 		command = command.substr(1);
-
-	std::stringstream ss(command);
+	static string newcomand;
+	bool canI = true;
+	if (command.find("\n") == std::string::npos)
+	{
+		newcomand += command;
+		canI = false;
+	}
+	else
+	{
+		newcomand += command;
+		canI = true;
+	}
+	std::stringstream ss(newcomand);
 	string cmd;
 
-	while (std::getline(ss, cmd))
+	while (std::getline(ss, cmd) && canI)
 	{
 		string command_name = cmd.substr(0, cmd.find(" "));
 
@@ -67,6 +79,7 @@ void CommandHandler::handleCommand(string command, Client *client)
 				args.push_back(argument);
 			}
 			operation->execute(client, args);
+			newcomand.clear();
 		}
 		catch (const std::exception &e)
 		{
@@ -74,4 +87,9 @@ void CommandHandler::handleCommand(string command, Client *client)
 			throw std::runtime_error("Error: Cannot handle command");
 		}
 	}
+}
+
+std::map<string, Command*> CommandHandler::getCommands()
+{
+	return _commands;
 }

@@ -350,3 +350,13 @@ string Server::getServerName() const
 {
 	return (_serverName);
 }
+
+int Server::getSocketFd()
+{
+	return _socketfd;
+}
+
+CommandHandler* Server::getCommandHandler()
+{
+	return _commandHandler;
+}

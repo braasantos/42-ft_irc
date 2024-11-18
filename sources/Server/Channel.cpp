@@ -70,7 +70,7 @@ int Channel::incrementUsers()
 
 int Channel::decrementUsers()
 {
-	if (this->_users <= 1)
+	if (this->_users <= 0)
 	{
 		cout << "CANNOT REMOVE MORE USERS\r\n";
 		return 1;
