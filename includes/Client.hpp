@@ -44,6 +44,7 @@ class Client
 		string getRealname() const;
 		string getHostname() const;
 		string getPassword() const;
+		bool getInvited();
 		unsigned int getChannelLimit() const;
 		Channel* getChannel(string name);
 		std::vector<Channel*> &getInvitedChannels();
@@ -56,12 +57,10 @@ class Client
 		void setPassword(string password);
 		void setBanned(bool banned);
 		void addInvitedChannel(Channel* channel);
-
-		void setAuthenticated(bool authenticated);
-		
-		void response(string message);
 		void setInvited(bool invited);
-		bool getInvited();
+		void setAuthenticated(bool authenticated);
+
+		void response(string message);
 };
 
 std::ostream &operator<<(std::ostream &os, Client const &client);
