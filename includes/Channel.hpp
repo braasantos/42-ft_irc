@@ -17,7 +17,6 @@ private:
 	int _users;
 	bool hasK;
 
-
 	std::vector<string> _operators;
 	std::vector<string> _invited_members;
 

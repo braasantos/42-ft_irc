@@ -38,9 +38,7 @@ void Kick::execute(Client* client, std::list<string> args)
 		args.pop_front();
 	}
 	else
-	{
 		reason = "No specific reson";
-	}
 
 	Server *server = client->getServer();
 	Channel *channel = server->getChannel(currChannel);
@@ -73,16 +71,16 @@ void Kick::execute(Client* client, std::list<string> args)
 			return;
 		}
 	}
-	string clientName = client->getNickname();
-	std::vector<Client *> members = channel->getMembers();
-	for (std::vector<Client*>::iterator it = members.begin(); it != members.end(); ++it)
+
+	std::list<string> channels;
+	channels.push_back(channel->getName());
+
+	for (std::list<string>::iterator it = channels.begin(); it != channels.end(); ++it)
 	{
-        Client* client = *it;
-		if (client->getNickname() == targetToKick)
-		{
-			channel->removeMember(*it);
-			cout << targetToKick + " was removed " + "for " + reason + " by " + clientName <<endl;
-			return ;
-		}
-    }
+		std::vector<Client *> members = channel->getMembers();
+		for (std::vector<Client *>::iterator memberIt = members.begin(); memberIt != members.end(); ++memberIt)
+			(*memberIt)->response(":" + client->getNickname() + "!" + client->getUsername() + "@" + client->getHostname() + " KICK " + currChannel + " " + targetToKick + " :" + reason + "\r\n");
+
+		channel->removeMember(client);
+	}
 }
