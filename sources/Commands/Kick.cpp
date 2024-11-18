@@ -45,7 +45,10 @@ void Kick::execute(Client* client, std::list<string> args)
 	Server *server = client->getServer();
 	Channel *channel = server->getChannel(currChannel);
 	if (!channel)
-		return ;
+	{
+		ERR_NOSUCHCHANNEL(client, currChannel);
+		return;
+	}
 	if (!channel->isOperator(client))
 	{
 		ERR_CANNOTREMOVEUSER(client, targetToKick)
