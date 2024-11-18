@@ -75,6 +75,7 @@ void Join::execute(Client *client, std::list<string> args)
 	{
 		if (!client->getInvited())
 		{
+			cout << "INVITE ONLY\r\n";
 			// ERR_MODEINVITEONLY(client, ch_name);
 			return ;
 		}

@@ -52,4 +52,5 @@ public:
 	int incrementUsers();
 	bool hasKey();
 	string getKey();
+	void setTopic(string topic);
 };

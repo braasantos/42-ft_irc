@@ -141,6 +141,12 @@ string Channel::getTopic() const
 	return (_topic);
 }
 
+void Channel::setTopic(string topic)
+{
+	_topic = topic;
+}
+
+
 /**
  * @brief Set the Mode object
  *
@@ -215,9 +221,7 @@ void Channel::removeOperator(Client *client)
 
 void Channel::setUserLimit(int limit)
 {
-	cout << "limit 1 " << _userLimit << endl;
 	_userLimit = limit;
-	cout << "limit 2 " << _userLimit << endl;
 }
 
 /**
