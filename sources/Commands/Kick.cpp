@@ -44,6 +44,8 @@ void Kick::execute(Client* client, std::list<string> args)
 
 	Server *server = client->getServer();
 	Channel *channel = server->getChannel(currChannel);
+	if (!channel)
+		return ;
 	if (!channel->isOperator(client))
 	{
 		ERR_CANNOTREMOVEUSER(client, targetToKick)
@@ -75,6 +77,11 @@ void Kick::execute(Client* client, std::list<string> args)
         Client* client = *it;
 		if (client->getNickname() == targetToKick)
 		{
+			if (client->getNickname() == clientName)
+			{
+				cout << "CANNOT KICK YOURSELF\r\n";
+				return ;
+			}
 			channel->removeMember(*it);
 			cout << targetToKick + " was removed " + "for " + reason + " by " + clientName <<endl;
 			return ;
