@@ -51,10 +51,13 @@ void Topic::execute(Client *client, std::list<string> args)
 		ERR_INVALIDTOPIC(client, chName);
 		return ;
 	}
-	if (std::strcmp(topic.c_str(), ":") == 0) // clear topic when is only :
+
+	if (std::strcmp(topic.c_str(), ":") == 0)
 	{
 		channel->setTopic("");
+		return ;
 	}
+
 	if (channel->getMode() == 't')
 	{
 		if (channel->isOperator(client))
@@ -70,7 +73,5 @@ void Topic::execute(Client *client, std::list<string> args)
 		}
 	}
 	else
-	{
 		channel->setTopic(topic.substr(1));
-	}
 }

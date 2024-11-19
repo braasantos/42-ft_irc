@@ -20,7 +20,6 @@ int main(int argc, char **argv)
 		globalServer->createSocket(atoi(argv[1]));
 		globalServer->startServerIPV4();
 
-		delete globalServer;
 		return (0);
 	}
 	else

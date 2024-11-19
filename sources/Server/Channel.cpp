@@ -241,10 +241,12 @@ void Channel::unsetUserLimit()
  */
 int Channel::removeMember(Client *client)
 {
-	if (this->decrementUsers())
-		return 1;
-	_members.erase(client->getNickname());
-	return 0;
+    if (this->decrementUsers())
+    {
+        return (1);
+    }
+   _members.erase(client->getNickname());
+    return (0);
 }
 
 std::map<string, Client*> &Channel::getBanlist()

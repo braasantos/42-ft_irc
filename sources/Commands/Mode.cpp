@@ -18,7 +18,7 @@ void Mode::execute(Client *client, std::list<string> args)
 
 	if (args.size() < 1)
 	{
-		client->response(":" + client->getHostname() + " 461 MODE :Not enough parameters\r\n");
+		ERR_NEEDMOREPARAMS(client, "MODE");
 		return;
 	}
 	string modeString;
@@ -31,12 +31,12 @@ void Mode::execute(Client *client, std::list<string> args)
 		Channel *channel = server->getChannel(target);
 		if (channel == NULL)
 		{
-			client->response(":" + client->getHostname() + " 403 " + target + " :No such channel\r\n");
+			ERR_NOSUCHCHANNEL(client, target);
 			return;
 		}
 		if (args.empty())
 		{
-			client->response(":" + client->getHostname() + " 324 " + target + " +" + channel->getMode() + "\r\n");
+			client->response(":server 324 " + target + " +" + channel->getMode() + "\r\n");
 			return;
 		}
 		if (!args.empty())
@@ -47,7 +47,7 @@ void Mode::execute(Client *client, std::list<string> args)
 		}
 		if (!channel->isOperator(client))
 		{
-			client->response(":" + client->getHostname() + " 482 " + target + " :You're not channel operator\r\n");
+			client->response(":server 482 " + client->getNickname() + " " + target + " :You're not channel operator\r\n");
 			return;
 		}
 		bool adding = false;
@@ -82,7 +82,7 @@ void Mode::execute(Client *client, std::list<string> args)
 					{
 						if (args.empty())
 						{
-							client->response(":" + client->getHostname() + " 461 MODE :Not enough parameters\r\n");
+							ERR_NEEDMOREPARAMS(client, "MODE");
 							return;
 						}
 						string key = args.front();
@@ -96,7 +96,7 @@ void Mode::execute(Client *client, std::list<string> args)
 				case 'o':
 					if (args.empty())
 					{
-						client->response(":" + client->getHostname() + " 461 MODE :Not enough parameters\r\n");
+						ERR_NEEDMOREPARAMS(client, "MODE");
 						return;
 					}
 					nickname = args.front();
@@ -114,7 +114,7 @@ void Mode::execute(Client *client, std::list<string> args)
 					}
 					if (targetClient == NULL)
 					{
-						client->response(":" + client->getHostname() + " 401 " + nickname + " :No such nick/channel\r\n");
+						ERR_NOSUCHNICK(client, nickname);
 						return;
 					}
 					if (adding)
@@ -127,7 +127,7 @@ void Mode::execute(Client *client, std::list<string> args)
 					{
 						if (args.empty())
 						{
-							client->response(":" + client->getHostname() + " 461 MODE :Not enough parameters\r\n");
+							ERR_NEEDMOREPARAMS(client, "MODE");
 							return;
 						}
 						if (args.empty())
@@ -140,7 +140,7 @@ void Mode::execute(Client *client, std::list<string> args)
 						ss >> limit;
 						if (ss.fail())
 						{
-							client->response(":" + client->getHostname() + " 461 MODE :Invalid parameter\r\n");
+							client->response(":server 461 MODE " + client->getNickname() + " :Invalid parameter\r\n");
 							return;
 						}
 						args.pop_front();
@@ -150,7 +150,7 @@ void Mode::execute(Client *client, std::list<string> args)
 						channel->unsetUserLimit();
 					break;
 				default:
-					client->response(":" + client->getHostname() + " 501 " + target + " :Unknown mode flag\r\n");
+					client->response(":server 501 " + client->getNickname() + " " + target + " :Unknown mode flag\r\n");
 					break;
 				}
 			}

@@ -42,6 +42,7 @@ void Privmsg::execute(Client *client, std::list<string> args)
 		return;
 	}
 
+
 	Server *server = client->getServer();
 	if (target[0] == '#' || target[0] == '&')
 	{
@@ -61,7 +62,7 @@ void Privmsg::execute(Client *client, std::list<string> args)
 		for (; it != members.end(); ++it)
 		{
 			if (*it != client)
-				(*it)->response(":" + client->getNickname() + "!" + client->getUsername() + "@" + client->getHostname() + " PRIVMSG " + target + " :" + message + "\r\n");
+				(*it)->response(":" + client->getNickname() + "!" + client->getUsername() + "@" + client->getHostname() + " PRIVMSG " + target + " " + message + "\r\n");
 		}
 	}
 	else
@@ -82,6 +83,6 @@ void Privmsg::execute(Client *client, std::list<string> args)
 			ERR_NOSUCHNICK(client, target);
 			return;
 		}
-		targetClient->response(":" + client->getNickname() + "!" + client->getUsername() + "@" + client->getHostname() + " PRIVMSG " + target + " :" + message + "\r\n");
+		targetClient->response(":" + client->getNickname() + "!" + client->getUsername() + "@" + client->getHostname() + " PRIVMSG " + target + " " + message + "\r\n");
 	}
 }

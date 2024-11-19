@@ -18,7 +18,7 @@ void Kick::execute(Client* client, std::list<string> args)
 
 	if (args.empty())
 	{
-		ERR_NORECIPIENT(client, "PRIVMSG");
+		ERR_NORECIPIENT(client, "KICK");
 		return ;
 	}
 	string currChannel = args.front();
@@ -90,7 +90,8 @@ void Kick::execute(Client* client, std::list<string> args)
 		for (std::vector<Client *>::iterator memberIt = members.begin(); memberIt != members.end(); ++memberIt)
 		{
 			(*memberIt)->response(":" + client->getNickname() + "!" + client->getUsername() + "@" + client->getHostname() + " KICK " + currChannel + " " + targetToKick + " :" + reason + "\r\n");
+			if ((*memberIt)->getNickname() == targetToKick)
+				channel->removeMember(*memberIt);
 		}
-		channel->removeMember(client);
 	}
 }

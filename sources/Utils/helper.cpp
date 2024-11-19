@@ -116,26 +116,6 @@ void signalHandler(int signum)
 
 	if (globalServer != NULL)
 	{
-		close(globalServer->getSocketFd());
-
-		// std::map<string, Command *> commands = globalServer->getCommandHandler()->getCommands();
-
-		// for (std::map<string, Command *>::iterator it = commands.begin(); it != commands.end(); ++it)
-		// {
-		// 	delete it->second;
-		// }
-		// std::map<int, Client*> clients = globalServer->getClients();
-		// for (std::map<int, Client *>::iterator it = clients.begin(); it != clients.end(); ++it)
-		// {
-		// 	close(it->first);
-		// 	delete it->second;
-		// }
-		// std::map<string, Channel*> &channel = globalServer->getChannels();
-		// for (std::map<string, Channel *>::iterator it = channel.begin(); it != channel.end(); ++it)
-		// 	delete it->second;
-		// channel.clear();
-		globalServer->getPollFd().clear();
-		cout << GREEN << "Server stopped" << RESET << endl;
 		delete globalServer;
 		globalServer = NULL;
 	}
