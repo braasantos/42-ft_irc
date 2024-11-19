@@ -35,17 +35,17 @@ void Invite::execute(Client* client, std::list<string> args)
 	args.pop_front();
 	if (chName[0] != '#' && chName[0] != '&')
 	{
-		client->response("403 " + chName + " :No such chName\r\n");
+		ERR_NOSUCHCHANNEL(client, chName);
 		return;
 	}
 	if (nickname[0] != ':' && nickname[0] != '&')
 	{
-		client->response("401 " + nickname + " :No such nick/chName\r\n");
+		ERR_NOSUCHNICK(client, nickname);
 		return;
 	}
 	if (channel == NULL)
 	{
-		client->response("403 " + chName + " :No such channel\r\n");
+		ERR_NOSUCHCHANNEL(client, chName);
 		return;
 	}
 	if (channel->isOnChannel(nickname) )
@@ -69,17 +69,4 @@ void Invite::execute(Client* client, std::list<string> args)
 			return ;
 		}
     }
-	// if (client->getChannel(channel)->getMode() != 'i' && !client->getChannel(channel)->isOperator(client))
-	// {
-	// 	client->response("482 " + channel + " :You're not channel operator\r\n");
-	// 	return;
-	// }
-	// if (client->getChannel(channel)->isOnChannel(nickname))
-	// {
-	// 	client->response("443 " + nickname + " " + channel + " :is already on channel\r\n");
-	// 	return;
-	// }
-	// client->getChannel(channel)->addMember(client);
-	// client->response("341 " + nickname + " " + channel + " :Inviting you on channel\r\n");
-	// client->response("INVITE " + nickname + " " + channel + "\r\n");
 }

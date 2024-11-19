@@ -38,13 +38,26 @@ void Topic::execute(Client *client, std::list<string> args)
 		cout << "NO TOPIC SET\r\n";
 		return ;
 	}
-	string topic = args.front();
-	args.pop_front();
+	string topic;
+	while (!args.empty())
+	{
+		topic += args.front() + " ";
+		args.pop_front();
+		if (!args.empty())
+			topic += " ";
+	}
 	if (topic[0] != ':')
 	{
 		cout << "ERROR\r\n";
 		return ;
 	}
+
+	if (std::strcmp(topic.c_str(), ":") == 0)
+	{
+		channel->setTopic("");
+		return ;
+	}
+
 	if (channel->getMode() == 't')
 	{
 		if (channel->isOperator(client))
@@ -60,7 +73,5 @@ void Topic::execute(Client *client, std::list<string> args)
 		}
 	}
 	else
-	{
 		channel->setTopic(topic.substr(1));
-	}
 }

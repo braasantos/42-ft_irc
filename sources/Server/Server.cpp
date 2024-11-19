@@ -23,17 +23,30 @@ Server::~Server()
 {
 	close(this->_socketfd);
 
-	delete _commandHandler;
+    for (std::map<int, Client *>::iterator it = _clients.begin(); it != _clients.end(); ++it)
+    {
+        close(it->first);
+        delete it->second;
+    }
+    _clients.clear();
 
-	for (std::map<int, Client *>::iterator it = _clients.begin(); it != _clients.end(); ++it)
-	{
-		close(it->first);
-		delete it->second;
-	}
+    for (std::map<string, Channel *>::iterator it = _channels.begin(); it != _channels.end(); ++it)
+    {
+        delete it->second;
+    }
+    _channels.clear();
 
-	_clients.clear();
-	_pollfds.clear();
-	cout << GREEN << "Server stopped" << RESET << endl;
+    std::map<string, Command *> commands = _commandHandler->getCommands();
+    for (std::map<string, Command *>::iterator it = commands.begin(); it != commands.end(); ++it)
+    {
+        delete it->second;
+    }
+    _commandHandler->getCommands().clear();
+
+    delete _commandHandler;
+
+    _pollfds.clear();
+    cout << GREEN << "Server resources cleaned up" << RESET << endl;
 }
 
 /**
@@ -120,6 +133,12 @@ void Server::startServerIPV4()
 					break;
 				}
 			}
+			if (it->revents & POLLHUP)
+			{
+				removeClient(it->fd);
+				_pollfds.erase(it);
+				break ;
+			}
 		}
 	}
 }
@@ -176,6 +195,13 @@ void Server::handleMessageFromClient(int fd)
 		Client *client = it->second;
 		string message = readFromSocket(fd);
 
+		if (message.empty())
+        {
+            cout << RED << "Client disconnected" << RESET << endl;
+            removeClient(fd);
+            return;
+        }
+
 		cout << CYAN << "Message: " << message << RESET << endl;
 
 		_commandHandler->handleCommand(message, client);
@@ -202,8 +228,10 @@ string Server::readFromSocket(int fd)
 	int bytes_read = recv(fd, buffer, 1024, 0);
 	if (bytes_read == -1)
 		throw std::runtime_error("Error: Cannot read from socket");
-	else
-		message = string(buffer, bytes_read);
+	else if (bytes_read == 0)
+		return ("");
+
+	message = string(buffer, bytes_read);
 
 	return (message);
 }
@@ -260,6 +288,9 @@ std::map<int, Client *> &Server::getClients()
 
 void Server::removeClient(int client_fd)
 {
+
+	close(client_fd);
+
 	std::map<int, Client *>::iterator it = _clients.find(client_fd);
 	if (it != _clients.end())
 	{
