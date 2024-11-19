@@ -13,63 +13,77 @@ Topic::~Topic()
 
 void Topic::execute(Client *client, std::list<string> args)
 {
+    if (!client->isAuthenticated())
+    {
+        ERR_AUTH(client);
+        return;
+    }
+    if (args.empty())
+    {
+        ERR_NEEDMOREPARAMS(client, "TOPIC");
+        return ;
+    }
 
-	if (!client->isAuthenticated())
-	{
-		ERR_AUTH(client);
-		return;
-	}
-	if (args.empty())
-	{
-		ERR_NEEDMOREPARAMS(client, "TOPIC");
-		return ;
-	}
-	string chName = args.front();
-	args.pop_front();
-	Server *server = client->getServer();
-	Channel *channel = server->getChannel(chName);
-	if (args.empty())
-	{
-		if (!channel->getTopic().empty())
-		{
-			RPL_TOPIC(client, channel);
-			return ;
-		}
-		RPL_NOTOPIC(client, chName);
-		return ;
-	}
-	string topic;
-	while (!args.empty())
-	{
-		topic += args.front();
-		args.pop_front();
-		if (!args.empty())
-			topic += " ";
-	}
-	if (topic[0] != ':')
-	{
-		ERR_INVALIDTOPIC(client, chName);
-		return ;
-	}
+    if (args.size() == 1)
+    {
+        string ch_name = args.front();
+        if (ch_name[0] == '#')
+        {
+            Channel *channel = client->getServer()->getChannel(ch_name);
+            if (channel == NULL)
+            {
+                ERR_NOSUCHCHANNEL(client, ch_name);
+                return ;
+            }
+            if (!channel->getTopic().empty())
+            {
+                client->response(":" + client->getNickname() + "!" + client->getUsername() + "@" + client->getHostname() + " TOPIC " + ch_name + " :" + channel->getTopic() + "\r\n");
+				return ;
+            }
+            RPL_NOTOPIC(client, ch_name);
+            return ;
+        }
+    }
 
-	if (std::strcmp(topic.c_str(), ":") == 0)
-	{
-		channel->setTopic("");
-		return ;
-	}
-	if (channel->getMode() == 't')
-	{
-		if (channel->isOperator(client))
-		{
-			channel->setTopic(topic.substr(1));
-			return ;
-		}
-		else
-		{
-			ERR_NOTANOPERATOR(client, chName);
-			return ;
-		}
-	}
-	else
-		channel->setTopic(topic.substr(1));
+    string ch_name = args.front();
+    args.pop_front();
+
+    Channel *channel = client->getServer()->getChannel(ch_name);
+    
+    string topic;
+
+    while (!args.empty())
+    {
+        topic += args.front();
+        args.pop_front();
+        if (!args.empty())
+            topic += " ";
+    }
+
+    if (topic[0] != ':')
+    {
+        ERR_INVALIDTOPIC(client, ch_name);
+        return ;
+    }
+
+    if (std::strcmp(topic.c_str(), "::") == 0)
+    {
+        channel->setTopic("");
+        return ;
+    }
+    if (channel->getMode() == 't')
+    {
+        if (channel->isOperator(client))
+        {
+            channel->setTopic(topic.substr(1));
+            return ;
+        }
+        else
+        {
+            ERR_NOTANOPERATOR(client, ch_name);
+            return ;
+        }
+    }
+    else
+        channel->setTopic(topic.substr(1));
 }
