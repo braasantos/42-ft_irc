@@ -20,7 +20,7 @@ void Invite::execute(Client* client, std::list<string> args)
 
 	if (args.size() < 2)
 	{
-		client->response("461 INVITE :Not enough parameters\r\n");
+		ERR_NEEDMOREPARAMS(client, "INVITE");
 		return;
 	}
 	std::string chName = args.front();

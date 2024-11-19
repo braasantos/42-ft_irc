@@ -57,13 +57,11 @@ void Topic::execute(Client *client, std::list<string> args)
 		channel->setTopic("");
 		return ;
 	}
-
 	if (channel->getMode() == 't')
 	{
 		if (channel->isOperator(client))
 		{
 			channel->setTopic(topic.substr(1));
-			cout << channel->getTopic() << endl;
 			return ;
 		}
 		else

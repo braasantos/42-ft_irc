@@ -25,35 +25,36 @@ void Part::execute(Client *client, std::list<string> args)
 	string reason;
 	string channel;
 
-	if (args.size() > 1)
+	channel = args.front();
+	args.pop_front();
+	if (!args.empty())
 	{
-		channel = args.front();
-		args.pop_front();
-		reason = args.front();
+		while (!args.empty())
+		{
+			reason += args.front() + " ";
+			args.pop_front();
+			if (!args.empty())
+				reason += " ";
+		}
 	}
 
-	std::list<string> channels;
-	channels.push_back(channel);
-	
-	for (std::list<string>::iterator it = channels.begin(); it != channels.end(); ++it)
+	Channel *the_channel = server->getChannel(channel);
+
+	if (the_channel == NULL)
 	{
-		Channel *channel = server->getChannel(*it);
-		if (channel == NULL)
-		{
-			client->response(":" + client->getHostname() + " 403 " + *it + " :No such channel\r\n");
-			continue;
-		}
-
-		if (!channel->isOnChannel(client->getNickname()))
-		{
-			client->response(":" + client->getHostname() + " 442 " + *it + " :You're not on that channel\r\n");
-			continue;
-		}
-
-		std::vector<Client *> members = channel->getMembers();
-		for (std::vector<Client *>::iterator memberIt = members.begin(); memberIt != members.end(); ++memberIt)
-			(*memberIt)->response(":" + client->getNickname() + "!" + client->getUsername() + "@" + client->getHostname() + " PART " + *it + " :" + reason + "\r\n");
-
-		channel->removeMember(client);
+		client->response(":" + client->getHostname() + " 403 " + channel + " :No such channel\r\n");
+		return ;
 	}
+
+	if (!the_channel->isOnChannel(client->getNickname()))
+	{
+		client->response(":" + client->getHostname() + " 442 " + channel + " :You're not on that channel\r\n");
+		return ;
+	}
+
+	std::vector<Client *> members = the_channel->getMembers();
+	for (std::vector<Client *>::iterator memberIt = members.begin(); memberIt != members.end(); ++memberIt)
+		(*memberIt)->response(":" + client->getNickname() + "!" + client->getUsername() + "@" + client->getHostname() + " PART " + channel + " :" + reason + "\r\n");
+
+	the_channel->removeMember(client);
 }

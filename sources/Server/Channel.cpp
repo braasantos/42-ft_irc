@@ -166,7 +166,7 @@ void Channel::setMode(char mode)
 
 void Channel::unsetMode(char mode)
 {
-	_mode &= ~mode;
+	_mode = mode;
 }
 
 /**

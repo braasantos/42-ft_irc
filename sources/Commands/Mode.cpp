@@ -69,13 +69,13 @@ void Mode::execute(Client *client, std::list<string> args)
 					if (adding)
 						channel->setMode('i');
 					else
-						channel->unsetMode('i');
+						channel->unsetMode('x');
 					break;
 				case 't':
 					if (adding)
 						channel->setMode('t');
 					else
-						channel->unsetMode('t');
+						channel->unsetMode('x');
 					break;
 				case 'k':
 					if (adding)
