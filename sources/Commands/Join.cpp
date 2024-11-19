@@ -115,7 +115,9 @@ void Join::execute(Client *client, std::list<string> args)
     }
 
     if (channel->getTopic().empty())
-        client->response(":server 331 " + client->getNickname() + " " + ch_name + " :No topic is set\r\n");
+    {
+        RPL_NOTOPIC(client, ch_name);
+    }
     else
-        client->response(":server 332 " + client->getNickname() + " " + ch_name + " :" + channel->getTopic() + "\r\n");
+        RPL_TOPIC(client, channel);
 }

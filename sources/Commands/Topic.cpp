@@ -21,7 +21,7 @@ void Topic::execute(Client *client, std::list<string> args)
 	}
 	if (args.empty())
 	{
-		cout << "NO ARGUMENTS\r\n";
+		ERR_NEEDMOREPARAMS(client, "TOPIC");
 		return ;
 	}
 	string chName = args.front();
@@ -32,18 +32,28 @@ void Topic::execute(Client *client, std::list<string> args)
 	{
 		if (!channel->getTopic().empty())
 		{
-			cout << channel->getTopic() << endl;
+			RPL_TOPIC(client, channel);
 			return ;
 		}
-		cout << "NO TOPIC SET\r\n";
+		RPL_NOTOPIC(client, chName);
 		return ;
 	}
-	string topic = args.front();
-	args.pop_front();
+	string topic;
+	while (!args.empty())
+	{
+		topic += args.front();
+		args.pop_front();
+		if (!args.empty())
+			topic += " ";
+	}
 	if (topic[0] != ':')
 	{
-		cout << "ERROR\r\n";
+		ERR_INVALIDTOPIC(client, chName);
 		return ;
+	}
+	if (std::strcmp(topic.c_str(), ":") == 0) // clear topic when is only :
+	{
+		channel->setTopic("");
 	}
 	if (channel->getMode() == 't')
 	{
@@ -55,7 +65,7 @@ void Topic::execute(Client *client, std::list<string> args)
 		}
 		else
 		{
-			cout << "NOT OPERATOR\r\n";
+			ERR_NOTANOPERATOR(client, chName);
 			return ;
 		}
 	}

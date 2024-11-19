@@ -90,9 +90,16 @@ using std::string;
 #define RPL_ISUPPORT(client) client->response(":server 005 " + client->getNickname() + " CHANMODES=Ibeg,k,Jl,ACKMNOPQRSTiprstz :are supported by this server\r\n");
 #define RPL_INFO(client) client->response(":server 371 " + client->getNickname() + " :User is authenticated\r\n");
 #define RPL_MOTDSTART(client) client->response(":server 375 " + client->getNickname() + " :- " + client->getHostname() + " Message of the day - \r\n");
+#define RPL_TOPIC(client, channel) client->response(":server 332 " + client->getNickname() + " " + channel->getName() + " :" + channel->getTopic() + "\r\n");;
+#define RPL_NOTOPIC(client, ch_name) client->response(":server 331 " + client->getNickname() + " " + ch_name + " :No topic set\r\n");
 
 #define ERR_NOORIGIN(client) client->response(":server 409 :No origin specified\r\n");
 
 #define RPL_WHOREPLY(client, server, channel) client->response(":server 352 " + client->getNickname() + " " + channel + " " + client->getUsername() + " " + client->getHostname() + " " + server->getServerName() + " " + client->getNickname() + " H :0 :" + client->getRealname() + "\r\n");
 #define RPL_ENDOFWHO(client, mask) client->response(":server 315 " + client->getNickname() + " " + mask + " :End of WHO list\r\n");
 
+
+
+#define ERR_CANNOTKICKYOURSELF(client) client->response(":server 462 " + client->getNickname()  + " :You cannot kick yourself\r\n");
+#define ERR_NOTANOPERATOR(client, ch_name) client->response(":server 462 " + client->getNickname() + " " + ch_name + " :You are not an operator\r\n");
+#define ERR_INVALIDTOPIC(client, ch_name) client->response(":server 462 " + client->getNickname() + " " + ch_name + " :Invalid Topic\r\n");
