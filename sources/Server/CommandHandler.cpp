@@ -50,7 +50,6 @@ void CommandHandler::handleCommand(string command, Client *client)
 		for (unsigned int i = 0; i < command_name.length(); i++)
 			command_name[i] = std::toupper(command_name[i]);
 
-		cout << YELLOW << "Command:" << command_name << RESET << endl;
 
 		std::map<string, Command *>::iterator it = _commands.find(command_name);
 		if (command_name == "CAP")
@@ -59,16 +58,12 @@ void CommandHandler::handleCommand(string command, Client *client)
 			it = _commands.find("AUTH");
 		else if (it == _commands.end())
 		{
-			cout << RED << "Command not found" << RESET << endl;
+			ERR_INVALIDCOMMAND(client, cmd);
 			continue;
 		}
-
 		try
 		{
 			Command *operation = it->second;
-
-			cout << GREEN << "Command " << it->second << RESET << endl;
-
 			string argsBuffer = cmd.substr(cmd.find(" ") + 1);
 			std::istringstream argsStream(argsBuffer);
 			string argument;

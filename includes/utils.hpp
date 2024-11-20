@@ -103,3 +103,9 @@ using std::string;
 #define ERR_CANNOTKICKYOURSELF(client) client->response(":server 462 " + client->getNickname()  + " :You cannot kick yourself\r\n");
 #define ERR_NOTANOPERATOR(client, ch_name) client->response(":server 462 " + client->getNickname() + " " + ch_name + " :You are not an operator\r\n");
 #define ERR_INVALIDTOPIC(client, ch_name) client->response(":server 462 " + client->getNickname() + " " + ch_name + " :Invalid Topic\r\n");
+#define ERR_INVALIDMODE(client, ch_name) client->response(":server 462 " + client->getNickname() + " " + ch_name + " :Invalid Mode\r\n");
+#define ERR_CANNOTKICKDEC(client ,ch_name) client->response(":server 462 " + ch_name + " :Cannot remove any more users\r\n");
+#define ERR_CANNOTKICKINC(client, ch_name) client->response(":server 462 " + ch_name + " :Channel reached max number of clients\r\n");
+
+#define ERR_INVALIDCOMMAND(client, command) client->response(":server 462 " + command + " :Invalid command\r\n");
+

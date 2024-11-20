@@ -4,9 +4,8 @@
 /**
  * @brief Construct a new Channel:: Channel object
  */
-Channel::Channel() : _mode(0), _userLimit(2), _users(0), hasK(false)
+Channel::Channel() : _mode('x'), _userLimit(2), _users(0), hasK(false)
 {
-	cout << GREEN << "Channel object created." << RESET << endl;
 }
 
 /**
@@ -14,7 +13,6 @@ Channel::Channel() : _mode(0), _userLimit(2), _users(0), hasK(false)
  */
 Channel::~Channel()
 {
-	cout << RED << "Channel object destroyed." << RESET << endl;
 }
 
 /**
@@ -60,10 +58,7 @@ char Channel::getMode() const
 int Channel::incrementUsers()
 {
 	if (this->_users >= this->_userLimit)
-	{
-		cout << "CANNOT ADD MORE USERS\r\n";
 		return 1;
-	}
 	this->_users += 1;
 	return 0;
 }
@@ -71,10 +66,7 @@ int Channel::incrementUsers()
 int Channel::decrementUsers()
 {
 	if (this->_users <= 0)
-	{
-		cout << "CANNOT REMOVE MORE USERS\r\n";
 		return 1;
-	}
 	this->_users -= 1;
 	return 0;
 }

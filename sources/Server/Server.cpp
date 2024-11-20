@@ -187,23 +187,18 @@ void Server::handleMessageFromClient(int fd)
 {
 	try
 	{
-		cout << ORANGE << "Handling message from client.." << RESET << endl;
 		std::map<int, Client *>::iterator it = _clients.find(fd);
 		if (it == _clients.end())
 			return;
-
+		
 		Client *client = it->second;
 		string message = readFromSocket(fd);
 
 		if (message.empty())
         {
-            cout << RED << "Client disconnected" << RESET << endl;
             removeClient(fd);
             return;
         }
-
-		cout << CYAN << "Message: " << message << RESET << endl;
-
 		_commandHandler->handleCommand(message, client);
 	}
 	catch (const std::exception &e)
@@ -306,6 +301,7 @@ void Server::removeClient(int client_fd)
 			break;
 		}
 	}
+    cout << RED << "Client disconnected" << RESET << endl;
 }
 
 /**

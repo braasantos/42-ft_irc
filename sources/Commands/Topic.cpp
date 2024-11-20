@@ -37,7 +37,7 @@ void Topic::execute(Client *client, std::list<string> args)
             }
             if (!channel->getTopic().empty())
             {
-                client->response(":" + client->getNickname() + "!" + client->getUsername() + "@" + client->getHostname() + " TOPIC " + ch_name + " :" + channel->getTopic() + "\r\n");
+                client->response(":server 332 " + client->getNickname() + " " + ch_name + " :" + channel->getTopic() + "\r\n");
 				return ;
             }
             RPL_NOTOPIC(client, ch_name);
@@ -47,9 +47,13 @@ void Topic::execute(Client *client, std::list<string> args)
 
     string ch_name = args.front();
     args.pop_front();
-
     Channel *channel = client->getServer()->getChannel(ch_name);
-    
+    if (channel == NULL)
+    {
+        ERR_NOSUCHCHANNEL(client, ch_name);
+        return ;
+    }
+
     string topic;
 
     while (!args.empty())
@@ -86,4 +90,9 @@ void Topic::execute(Client *client, std::list<string> args)
     }
     else
         channel->setTopic(topic.substr(1));
+    std::vector<Client *> members = channel->getMembers();
+    for (std::vector<Client *>::iterator it = members.begin(); it != members.end(); ++it)
+    {
+        (*it)->response(":" + client->getNickname() + "!" + client->getUsername() + "@" + client->getHostname() + " TOPIC " + ch_name + " :" + channel->getTopic() + "\r\n");
+    }
 }

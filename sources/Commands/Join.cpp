@@ -88,7 +88,9 @@ void Join::execute(Client *client, std::list<string> args)
 			ERR_CHANNELUSERLIMIT(client, ch_name);
 			return;
 		}
-        channel->addMember(client);
+        if (channel->addMember(client))
+			ERR_CANNOTKICKDEC(client, ch_name);
+
     }
 
     std::vector<Client *> members = channel->getMembers();

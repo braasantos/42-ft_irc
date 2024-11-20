@@ -53,7 +53,7 @@ bool checkValidPassword(string password)
 
 void p_error(string error)
 {
-	cout << RED << error << RESET << endl;
+	cout  << RED << error << RESET << endl;
 	exit(1);
 }
 
@@ -112,8 +112,7 @@ void handleErrorConnection()
 
 void signalHandler(int signum)
 {
-	std::cout << "\nInterrupt signal (" << signum << ") received. Cleaning up and exiting...\n";
-
+	cout << "\nInterrupt signal (" << signum << ") received. Cleaning up and exiting...\n";
 	if (globalServer != NULL)
 	{
 		delete globalServer;

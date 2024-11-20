@@ -23,7 +23,7 @@ void Kick::execute(Client* client, std::list<string> args)
 	}
 	string currChannel = args.front();
 	string targetToKick;
-	string reason;
+	string reason; 
 	args.pop_front();
 	targetToKick += args.front();
 	args.pop_front();
@@ -91,7 +91,8 @@ void Kick::execute(Client* client, std::list<string> args)
 		{
 			(*memberIt)->response(":" + client->getNickname() + "!" + client->getUsername() + "@" + client->getHostname() + " KICK " + currChannel + " " + targetToKick + " :" + reason + "\r\n");
 			if ((*memberIt)->getNickname() == targetToKick)
-				channel->removeMember(*memberIt);
+				if (channel->removeMember(*memberIt))
+					ERR_CANNOTKICKDEC(client, currChannel);
 		}
 	}
 }

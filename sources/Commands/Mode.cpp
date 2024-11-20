@@ -44,7 +44,7 @@ void Mode::execute(Client *client, std::list<string> args)
 			args.pop_front();
 			if (modeString.size() != 2)
 			{
-				cout << "Invalid Mode" << endl;
+				ERR_INVALIDMODE(client, target);
 				return ;
 			}
 		}
@@ -89,7 +89,6 @@ void Mode::execute(Client *client, std::list<string> args)
 							return;
 						}
 						string key = args.front();
-						cout << key << endl;
 						args.pop_front();
 						channel->setKey(key);
 					}
@@ -111,7 +110,6 @@ void Mode::execute(Client *client, std::list<string> args)
 						if (it->second->getNickname() == nickname)
 						{
 							targetClient = it->second;
-							cout << targetClient->getNickname() << endl;
 							break;
 						}
 					}
@@ -135,7 +133,7 @@ void Mode::execute(Client *client, std::list<string> args)
 						}
 						if (args.empty())
 						{
-							cout << "NO ARGUMENTS FOUND FOR AVALIABLE MODE\r\n";
+							ERR_NEEDMOREPARAMS(client, "MODE");
 							return ;
 						}
 						std::stringstream ss(args.front());

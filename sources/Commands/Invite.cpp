@@ -24,12 +24,9 @@ void Invite::execute(Client* client, std::list<string> args)
 		return;
 	}
 	std::string chName = args.front();
-	cout << chName << endl;
 	args.pop_front();
 	std::string nickname = args.front();
 	string newNick = nickname.substr(1);
-	cout << newNick << endl;
-	cout << nickname << endl;
 	Server *server = client->getServer();
 	Channel *channel = server->getChannel(chName);
 	args.pop_front();
@@ -50,13 +47,13 @@ void Invite::execute(Client* client, std::list<string> args)
 	}
 	if (channel->isOnChannel(nickname) )
 	{
-		cout << "already on channel" << endl;
+		ERR_NOSUCHNICKONCH(client, nickname);
 		return ;
 
 	}
 	if (!channel->isOnChannel(client->getNickname()))
 	{
-		cout << "Not on channel" << endl;
+		ERR_NOSUCHNICKONCH(client, client-<getNickname());
 		return ;
 	}
 	std::map<int, Client*> target = server->getClients();
@@ -64,7 +61,6 @@ void Invite::execute(Client* client, std::list<string> args)
 	{
 		if (it->second->getNickname() == newNick )
 		{
-			cout << it->second->getNickname() << endl;
 			it->second->setInvited(true);
 			return ;
 		}
