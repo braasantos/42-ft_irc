@@ -16,7 +16,7 @@ void Kick::execute(Client* client, std::list<string> args)
 		return;
 	}
 
-	if (args.empty())
+	if (args.size() < 2)
 	{
 		ERR_NORECIPIENT(client, "KICK");
 		return ;

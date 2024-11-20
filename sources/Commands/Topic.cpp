@@ -18,7 +18,7 @@ void Topic::execute(Client *client, std::list<string> args)
         ERR_AUTH(client);
         return;
     }
-    if (args.empty())
+    if (args.size() < 1)
     {
         ERR_NEEDMOREPARAMS(client, "TOPIC");
         return ;

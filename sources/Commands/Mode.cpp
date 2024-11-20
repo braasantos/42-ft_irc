@@ -23,7 +23,6 @@ void Mode::execute(Client *client, std::list<string> args)
 	}
 	string modeString;
 	string target = args.front();
-	cout << "target " << target << endl;
 	args.pop_front();
 	Server *server = client->getServer();
 	if (target[0] == '#' || target[0] == '&')
@@ -43,7 +42,11 @@ void Mode::execute(Client *client, std::list<string> args)
 		{
 			modeString = args.front();
 			args.pop_front();
-			cout << "mode string " << modeString << endl;
+			if (modeString.size() != 2)
+			{
+				cout << "Invalid Mode" << endl;
+				return ;
+			}
 		}
 		if (!channel->isOperator(client))
 		{

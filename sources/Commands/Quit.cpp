@@ -10,9 +10,19 @@ Quit::~Quit() {}
 void Quit::execute(Client *client, std::list<string> args)
 {
 	Server *server = client->getServer();
-	string reason = "Bye for now!";
+	string reason;
+	if (args.empty())
+		reason = "Bye for now!";
 	if (!args.empty())
-		reason = args.front();
+	{
+		while (!args.empty())
+		{
+			reason += args.front();
+			args.pop_front();
+			if (!args.empty())
+				reason += " ";
+		}
+	}
 
 	for (std::map<string, Channel *>::iterator it = server->getChannels().begin(); it != server->getChannels().end(); ++it)
 	{

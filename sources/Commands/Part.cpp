@@ -31,7 +31,7 @@ void Part::execute(Client *client, std::list<string> args)
 	{
 		while (!args.empty())
 		{
-			reason += args.front() + " ";
+			reason += args.front();
 			args.pop_front();
 			if (!args.empty())
 				reason += " ";
